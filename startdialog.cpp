@@ -35,15 +35,6 @@ bool StartDialog::validateName(string name)
     }
 }
 
-bool StartDialog::validatePort(int port)
-{
-    if(port > 1023 && port < 65000) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 bool StartDialog::validateIp(string ip)
 {
     int bytesCount = 0;
@@ -106,11 +97,6 @@ void StartDialog::on_StartButton_clicked()
 
     if(!validateName(name)) {
         ui->infoText->append("Name is not valid. Ensure that lenght of the name is between 3 and 15. Name must contain only ASCII symbols with exception of '.'\n");
-        dataValid = false;
-    }
-
-    if(!validatePort(port)) {
-        ui->infoText->append("Port is not valid. Choose port from range: 1024 to 65000\n");
         dataValid = false;
     }
 

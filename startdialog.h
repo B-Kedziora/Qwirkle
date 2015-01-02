@@ -28,7 +28,6 @@ private:
     ConnectionData* connectionData;
     void enableStartButton();
     bool validateName(std::string name);
-    bool validatePort(int port);
     bool validateIp(std::string ip);
     std::string getNonLocalIp();
     std::string concatIp();
