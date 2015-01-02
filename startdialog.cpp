@@ -106,6 +106,17 @@ void StartDialog::on_StartButton_clicked()
     }
 
     if(dataValid) {
-
+        connectionData = new ConnectionData(name, ip, (unsigned short) port);
+        this->close();
     }
+}
+
+void StartDialog::on_hostNameEdit_editingFinished()
+{
+    ui->hostRadio->setChecked(true);
+}
+
+void StartDialog::on_joinNameEdit_editingFinished()
+{
+    ui->joinRadio->setChecked(true);
 }
