@@ -15,7 +15,7 @@ class StartDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit StartDialog(QWidget *parent, ConnectionData* connectionData);
+    explicit StartDialog(QWidget *parent, ConnectionData** connectionData);
     ~StartDialog();
 
 private slots:
@@ -29,7 +29,7 @@ private slots:
 
 private:
     Ui::StartDialog *ui;
-    ConnectionData* connectionData;
+    ConnectionData** connectionData;
     void enableStartButton();
     bool validateName(std::string name);
     bool validateIp(std::string ip);
