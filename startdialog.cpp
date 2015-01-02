@@ -1,14 +1,12 @@
 #include "startdialog.h"
 #include "ui_startdialog.h"
 
-StartDialog::StartDialog(QWidget *parent, std::string* name, std::string* ip, signed short int* port) :
+StartDialog::StartDialog(QWidget *parent, ConnectionData* connectionData) :
     QDialog(parent),
     ui(new Ui::StartDialog)
 {
     ui->setupUi(this);
-    name_ = name;
-    ip_ = ip;
-    port_ = port;
+    this->connectionData = connectionData;
 }
 
 StartDialog::~StartDialog()
@@ -75,24 +73,17 @@ void StartDialog::on_StartButton_clicked()
         return;
     }
 
-    if(validateName(name)) {
-
-    } else {
+    if(!validateName(name)) {
         ui->infoText->append("Name is not valid. Ensure that lenght of the name is between 3 and 15. Name must contain only ASCII symbols with exception of '.'\n");
-
         dataValid = false;
     }
 
-    if(validatePort(port)) {
-
-    } else {
+    if(!validatePort(port)) {
         ui->infoText->append("Port is not valid. Choose port from range: 1024 to 65000\n");
         dataValid = false;
     }
 
-    if(validateIp(ip)){
-
-    } else {
+    if(!validateIp(ip)) {
         ui->infoText->append("IP is not valid. No such IP");
         dataValid = false;
     }

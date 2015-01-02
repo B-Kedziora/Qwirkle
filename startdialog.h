@@ -2,6 +2,7 @@
 #define STARTDIALOG_H
 
 #include <QDialog>
+#include "connectiondata.h"
 
 namespace Ui {
 class StartDialog;
@@ -12,7 +13,7 @@ class StartDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit StartDialog(QWidget *parent, std::string* name, std::string* ip, signed short int* port);
+    explicit StartDialog(QWidget *parent, ConnectionData* connectionData);
     ~StartDialog();
 
 private slots:
@@ -22,10 +23,7 @@ private slots:
 
 private:
     Ui::StartDialog *ui;
-    std::string* name_;
-    std::string* ip_;
-    signed short int* port_;
-
+    ConnectionData* connectionData;
     void enableStartButton();
     bool validateName(std::string name);
     bool validatePort(int port);
