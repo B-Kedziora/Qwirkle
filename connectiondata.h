@@ -12,6 +12,7 @@ public:
     string getName();
     string getIp();
     unsigned short getPort();
+    string toString();
 private:
     string name;
     string ip;

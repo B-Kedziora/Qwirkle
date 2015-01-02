@@ -3,7 +3,7 @@
 
 using namespace std;
 
-StartDialog::StartDialog(QWidget *parent, ConnectionData* connectionData) :
+StartDialog::StartDialog(QWidget *parent, ConnectionData** connectionData) :
     QDialog(parent),
     ui(new Ui::StartDialog)
 {
@@ -106,7 +106,7 @@ void StartDialog::on_StartButton_clicked()
     }
 
     if(dataValid) {
-        connectionData = new ConnectionData(name, ip, (unsigned short) port);
+        *connectionData = new ConnectionData(name, ip, (unsigned short) port);
         this->close();
     }
 }

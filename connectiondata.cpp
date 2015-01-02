@@ -22,3 +22,12 @@ unsigned short ConnectionData::getPort()
 {
     return port;
 }
+
+string ConnectionData::toString()
+{
+    string res;
+    res = string("Name: ") + name + string("\n");
+    res += string("IP:") + ip + string("\n");
+    res += string("Port:") + std::to_string(port) + string("\n");
+    return res;
+}
