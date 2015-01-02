@@ -1,6 +1,6 @@
 #include "connectiondata.h"
 
-ConnectionData::ConnectionData(std::string username, std::string ip, unsigned short port)
+ConnectionData::ConnectionData(string username, string ip, unsigned short port)
 {
     name = username;
     this->ip = ip;
@@ -8,12 +8,12 @@ ConnectionData::ConnectionData(std::string username, std::string ip, unsigned sh
 }
 
 
-std::string ConnectionData::getName()
+string ConnectionData::getName()
 {
     return name;
 }
 
-std::string ConnectionData::getIp()
+string ConnectionData::getIp()
 {
     return ip;
 }

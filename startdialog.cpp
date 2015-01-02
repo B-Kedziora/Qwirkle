@@ -1,6 +1,8 @@
 #include "startdialog.h"
 #include "ui_startdialog.h"
 
+using namespace std;
+
 StartDialog::StartDialog(QWidget *parent, ConnectionData* connectionData) :
     QDialog(parent),
     ui(new Ui::StartDialog)
@@ -24,29 +26,58 @@ void StartDialog::on_ExitButton_clicked()
     exit(0);
 }
 
-bool StartDialog::validateName(std::string name)
+bool StartDialog::validateName(string name)
 {
-    return false;
+    if(name.length() > 2 && name.length() < 16 && name.find(".") == string::npos) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool StartDialog::validatePort(int port)
 {
-    return false;
+    if(port > 1023 && port < 65000) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-bool StartDialog::validateIp(std::string ip)
+bool StartDialog::validateIp(string ip)
 {
-    return false;
+    int bytesCount = 0;
+    short byte;
+    char *bt = strtok(const_cast<char*>(ip.c_str()), ".");  // Splits ip into bytes
+    while (bt) {    //Single byte check
+        bytesCount++;
+        try{
+            byte = stoi(string(bt));
+        } catch(exception e) {
+            return false;
+        }
+
+        if(byte < 0 || byte > 255)
+            return false;
+        bt = strtok(NULL, ".");
+    }
+
+    if(bytesCount == 4)
+        return true;
+    else
+        return false;
 }
 
-std::string StartDialog::getNonLocalIp()
+string StartDialog::getNonLocalIp()
 {
     return "";
 }
 
-std::string StartDialog::concatIp()
+string StartDialog::concatIp()
 {
-    return "";
+    string ip = (ui->IP1Edit->text() + "." + ui->IP2Edit->text() +
+              "." + ui->IP3Edit->text() + "." + ui->IP4Edit->text()).toStdString();
+    return ip;
 }
 
 
@@ -54,8 +85,8 @@ void StartDialog::on_StartButton_clicked()
 {
     ui->infoText->setText("");
 
-    std::string ip;
-    std::string name;
+    string ip;
+    string name;
     int port;
 
     bool dataValid = true;

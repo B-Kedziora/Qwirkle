@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "connectiondata.h"
+#include <string>
+#include <iostream>
 
 namespace Ui {
 class StartDialog;

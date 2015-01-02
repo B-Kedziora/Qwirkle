@@ -1,16 +1,20 @@
 #ifndef CONNECTIONDATA_H
 #define CONNECTIONDATA_H
 
+#include <string>
+
+using namespace std;
+
 class ConnectionData
 {
 public:
-    ConnectionData(std::string username, std::string ip, unsigned short port);
-    std::string getName();
-    std::string getIp();
+    ConnectionData(string username, string ip, unsigned short port);
+    string getName();
+    string getIp();
     unsigned short getPort();
 private:
-    std::string name;
-    std::string ip;
+    string name;
+    string ip;
     unsigned short port;
 };
 
