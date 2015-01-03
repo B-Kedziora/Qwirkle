@@ -23,17 +23,12 @@ private slots:
 
     void on_StartButton_clicked();
 
-    void on_hostNameEdit_editingFinished();
-
-    void on_joinNameEdit_editingFinished();
-
 private:
     Ui::StartDialog *ui;
     ConnectionData** connectionData;
     void enableStartButton();
     bool validateName(std::string name);
     bool validateIp(std::string ip);
-    std::string getNonLocalIp();
     std::string concatIp();
 };
 

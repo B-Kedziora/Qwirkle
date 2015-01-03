@@ -39,8 +39,9 @@ bool StartDialog::validateIp(string ip)
 {
     int bytesCount = 0;
     short byte;
-    char *bt = strtok(const_cast<char*>(ip.c_str()), ".");  // Splits ip into bytes
-    while (bt) {    //Single byte check
+    string temp(ip, 0); // strtok removes seperators from original string. Copy.
+    char *bt = strtok(const_cast<char*>(temp.c_str()), ".");  // Splits ip into bytes
+    while (bt) {        //Single byte check
         bytesCount++;
         try{
             byte = stoi(string(bt));
@@ -59,11 +60,6 @@ bool StartDialog::validateIp(string ip)
         return false;
 }
 
-string StartDialog::getNonLocalIp()
-{
-    return "";
-}
-
 string StartDialog::concatIp()
 {
     string ip = (ui->IP1Edit->text() + "." + ui->IP2Edit->text() +
@@ -76,23 +72,15 @@ void StartDialog::on_StartButton_clicked()
 {
     ui->infoText->setText("");
 
-    string ip;
-    string name;
-    int port;
+    string ip = concatIp();
+    string name = ui->nameEdit->text().toStdString();;
+    int port = ui->portSpinBox->value();;
 
     bool dataValid = true;
 
-    if(ui->hostRadio->isChecked()) {
-        name = ui->hostNameEdit->text().toStdString();
-        port = ui->portSpinBoxHost->value();
-        ip = getNonLocalIp();
-    } else if(ui->joinRadio->isChecked()) {
-        name = ui->joinNameEdit->text().toStdString();
-        port = ui->portSpinBoxJoin->value();
-        ip = concatIp();
-    } else {
-        ui->infoText->setText("You must provide data to start.");
-        return;
+    if(!ui->hostRadio->isChecked() && !ui->joinRadio->isChecked()){
+        ui->infoText->append("Do you want to host or join the game?\n");
+        dataValid = false;
     }
 
     if(!validateName(name)) {
@@ -109,14 +97,4 @@ void StartDialog::on_StartButton_clicked()
         *connectionData = new ConnectionData(name, ip, (unsigned short) port);
         this->close();
     }
-}
-
-void StartDialog::on_hostNameEdit_editingFinished()
-{
-    ui->hostRadio->setChecked(true);
-}
-
-void StartDialog::on_joinNameEdit_editingFinished()
-{
-    ui->joinRadio->setChecked(true);
 }
