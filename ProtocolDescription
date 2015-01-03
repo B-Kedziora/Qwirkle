@@ -1,0 +1,48 @@
+
+Proces serwera posiada ten gracz, który hostuje grę. Przy zakładaniu serwera podaje swój numer portu, liczbę graczy i numer IP, jeśli ma kilka.
+Gracz chcący dołączyć musi podać port, IP i username. Jeśli nie udało się nawiązać połączenia dalsze próby są zaniechane. Po wysłaniu żądania dołączenia serwer przyjmuje gracza, jeśli jego nazwa gracza jest unikalna. W przeciwnym wypadku wysyła komunikat o odrzuceniu gracza. Jeśli na serwerze trwa gra, gracz jest o tym informowany, a program czeka na komunikat o przyjęciu gracza. Jeśli serwer nie odpowiada na próbę dołączenia do gry/połączenia nie można nawiąząć gracz automatycznie rezygnue. Serwer nie wyślę do żadnego gracza komunikatu o kolejce, jeśli nie będzie wystarczającej liczby graczy. Dopiero po tym serwer zmienia stan na w trakcie gry (warto by zrobić, żeby host mógł ręcznie startować). Gracz oczekuje na komunikaty o ruchach i komunikat o jego kolejce. Przy wiadomości z ruchem przeciwnika podana jest informacja ile punktów zdobył przeciwnik. W czasie ruchu gracza serwer oczekuje na jego ruch poprzedzony jego nazwą (jeśli nie uda się tego wydobyć z nagłówka pakietu [A nie wiem jak]). Po odebraniu jego ruchu rozsyła go do reszty graczy, a do wysyłającego ruch przekazuje informacje o zdobytych kloczuszkach. Jeśli gracz nie wykonuje ruchu, tylko wymienia kloczuszki (podając, które wymienia), to reszta graczy dostaje o tym informacje. Serwer odsyła graczowi informacje o kloczuszkach i jego ruch się kończy. Kiedy gra się kończy serwer wysyła komunikat do graczy i kończy połączenie. Oni sami ustalają ranking na podstawie przechowywanych informacji o punktach. Serwer przestaje mieć stan trwającej gry i gracze mogą się dołączyć ponownie.
+Jeśli w którymś momencie gry gracz zniknie (serwer nie dostanie potwierdzenia jakiegoś komunikatu lub nie dostanie wiadomości kontrolnej co jakiś czas), to jest eliminowany z gry. W drugą stronę analogicznie.
+
+Gracz hostujący automatycznie wysyła żądanie dołączenia na utworzony przez siebie serwer.
+
+Możliwe, że trzeba będzie powstawiać potwierdzenia otrzymania części komunikatów.
+
+Można jeszcze dodać, żeby przy ruchu dostawali informacje o ilości pozostałych klocuszkow w worku. 
+
+Można wstawić ograniczenie na czas ruchu, bo którego minięciu gracz traci kolejkę. Chociaż tego w oryginalnej grze nie było.
+
+Komunikaty:
+	Dołączanie:
+		- Wysłanie na serwer żądania dołączenie gry (gracz -> serwer) - wysłanie nazwy gracza:
+			-Odpowiedź o przyjęciu (serwer -> gracz) - gracz dołącza do gry
+			-Odpowiedź o odrzuceniu (serwer -> gracz) - Nazwa gracza nie jest unikalna
+			-Odpowiedź, że gra w toku (serwer -> gracz) - gracz dostaje komunikat i oczekuje na odpowiedź o przyjęciu
+			-Gracz rezygnuje z oczekiwania (gracz -> serwer) - serwer nie wysyła potwierdzenia (po co?)
+
+			-Gracz nie otrzymuje odpowiedzi: gracz zamyka połączenie, jeśli było utworzone
+
+	Trwanie gry:
+		- Po osiągnięciu odpowiedniej liczby graczy serwer wysyła informacje o kolejce gracza do pierwszego z nich (serwer -> gracz) - Serwer oczekuje na informacje o ruchu lub prośbę o wymianę kloczuszków
+		- Gracz wysyła informacje o swoim ruchu (lub wymianie) (gracz -> serwer)
+		- Serwer przesyła jego ruch dalej (serwer -> wszyscy gracze)
+		- Serwer przesyła do gracza informacje o nowych klocuszkach (serwer -> gracz) - W przypadku braku kloczuszków gracz dostaje wiadomość o tym
+		- Serwer przekazuje informacje o kolejce do kolejnego gracza (serwer -> gracz)	
+		- Nie pamiętam kiedy gra się kończy, ale serwer informuje o tym wszystkich graczy (serwer -> gracz)
+
+	Brakujący gracz:
+		- Serwer wysyła do wszystkich graczy informacje o odłączeniu się gracza (serwer -> wszyscy gracze) - Jeśli był to gracz, którego była to kolej, to serwer wysyła do kolejnego gracza informacje o jego kolejce
+
+	Wiadomość czatu (o ile będzie):
+		- Komunikat poprzedzony nazwą gracza (gracz -> serwer)
+		- Serwer rozsyła do wszystkich graczy (serwer -> wszyscy gracze) - wypisują oni sobie to w text fieldzie '<lokalny time stamp> <Gracz>: <wiadomość>' (można zrobić tak, że gracz wysyłający od razu sobie wypisuje i do niego nie jest wysyłana własna wiadomość jako potwierdzenie).
+
+
+Komunikat o ruchu może wyglądać np. tak:
+NAZWA_GRACZA.<POLE><KLOCEK>.<POLE><KLOCEK> and so on
+
+Z tego względu '.' musiałby być zakazany jako username.
+
+Klocek może być reprezentowany przez np. 2 litery: od koloru i od kształtu. W obiekcie klocek da się metodę toString() i tyle. 
+
+Z polem będzie chyba trochę większy problem, bo gra nie ma jakichś z góry ustalonych granic. Można sobie od początku założyć po prostu jakąś bardzo dużą przestrzeń, której nie da się przekroczyć. Można też przy wstawianiu z lewej strony lub u góry przesuwać całą resztę tablicy. Można przechowywać struktury pomocnicze, które powiedzą jaka jest rzeczywista kolejność linii wierszy. Osobiście uważam, że nie ma problemu z przesuwaniem tablicy, bo przy tej ilości elementów nie będzie problemu. 
+W takim przypadku lewy, górny klocek miałby pozycje 0,0. Te na lewo od niego -x, 0. Do góry od niego 0, -y. Po takim ruchu współrzędne 0,0 by się przesuwały. Dla gracza byłoby to transparentne. 

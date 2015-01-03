@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Host IP:</string>
+    <string>IP:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
