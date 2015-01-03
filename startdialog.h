@@ -23,6 +23,10 @@ private slots:
 
     void on_StartButton_clicked();
 
+    void on_hostRadio_clicked();
+
+    void on_joinRadio_clicked();
+
 private:
     Ui::StartDialog *ui;
     ConnectionData** connectionData;

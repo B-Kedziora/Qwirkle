@@ -98,3 +98,13 @@ void StartDialog::on_StartButton_clicked()
         this->close();
     }
 }
+
+void StartDialog::on_hostRadio_clicked()
+{
+    ui->ipNameLabel->setText("Your IP:");
+}
+
+void StartDialog::on_joinRadio_clicked()
+{
+    ui->ipNameLabel->setText("Server IP:");
+}
