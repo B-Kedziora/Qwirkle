@@ -2,7 +2,7 @@
 #define STARTDIALOG_H
 
 #include <QDialog>
-#include "connectiondata.h"
+#include "Commons/connectiondata.h"
 #include <string>
 #include <iostream>
 
@@ -15,7 +15,7 @@ class StartDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit StartDialog(QWidget *parent, ConnectionData** connectionData);
+    explicit StartDialog(QWidget *parent, ConnectionData** connectionData, bool* host);
     ~StartDialog();
 
 private slots:
@@ -30,6 +30,7 @@ private slots:
 private:
     Ui::StartDialog *ui;
     ConnectionData** connectionData;
+    bool* hostGame;
     void enableStartButton();
     bool validateName(std::string name);
     bool validateIp(std::string ip);

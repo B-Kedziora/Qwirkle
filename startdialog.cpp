@@ -3,12 +3,13 @@
 
 using namespace std;
 
-StartDialog::StartDialog(QWidget *parent, ConnectionData** connectionData) :
+StartDialog::StartDialog(QWidget *parent, ConnectionData** connectionData, bool* host) :
     QDialog(parent),
     ui(new Ui::StartDialog)
 {
     ui->setupUi(this);
     this->connectionData = connectionData;
+    this->hostGame = host;
 }
 
 StartDialog::~StartDialog()
@@ -78,7 +79,11 @@ void StartDialog::on_StartButton_clicked()
 
     bool dataValid = true;
 
-    if(!ui->hostRadio->isChecked() && !ui->joinRadio->isChecked()){
+    if(ui->hostRadio->isChecked()) {
+        *hostGame = true;
+    } else if (ui->joinRadio->isChecked()) {
+        *hostGame = false;
+    } else {
         ui->infoText->append("Do you want to host or join the game?\n");
         dataValid = false;
     }
