@@ -3,13 +3,14 @@
 
 using namespace std;
 
-StartDialog::StartDialog(QWidget *parent, ConnectionData** connectionData, bool* host) :
+StartDialog::StartDialog(QWidget *parent, ConnectionData** connectionData, bool* host, int* players):
     QDialog(parent),
     ui(new Ui::StartDialog)
 {
     ui->setupUi(this);
     this->connectionData = connectionData;
     this->hostGame = host;
+    this->playersCount = players;
 }
 
 StartDialog::~StartDialog()
@@ -100,6 +101,7 @@ void StartDialog::on_StartButton_clicked()
 
     if(dataValid) {
         *connectionData = new ConnectionData(name, ip, (unsigned short) port);
+        *playersCount = ui->playersCount->value();
         this->close();
     }
 }
@@ -107,9 +109,13 @@ void StartDialog::on_StartButton_clicked()
 void StartDialog::on_hostRadio_clicked()
 {
     ui->ipNameLabel->setText("Your IP:");
+    ui->playersLabel->setEnabled(true);
+    ui->playersCount->setEnabled(true);
 }
 
 void StartDialog::on_joinRadio_clicked()
 {
     ui->ipNameLabel->setText("Server IP:");
+    ui->playersLabel->setEnabled(false);
+    ui->playersCount->setEnabled(false);
 }

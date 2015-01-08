@@ -15,7 +15,7 @@ class StartDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit StartDialog(QWidget *parent, ConnectionData** connectionData, bool* host);
+    explicit StartDialog(QWidget *parent, ConnectionData** connectionData, bool* host, int* players);
     ~StartDialog();
 
 private slots:
@@ -31,6 +31,7 @@ private:
     Ui::StartDialog *ui;
     ConnectionData** connectionData;
     bool* hostGame;
+    int* playersCount;
     void enableStartButton();
     bool validateName(std::string name);
     bool validateIp(std::string ip);
