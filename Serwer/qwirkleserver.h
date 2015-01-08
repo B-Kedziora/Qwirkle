@@ -5,6 +5,8 @@
 #include "../Commons/utils.h"
 #include <vector>
 #include <QTcpServer>
+#include <pthread.h>
+#include <connection.h>
 
 class QwirkleServer
 {
@@ -17,8 +19,11 @@ class QwirkleServer
         std::string owner;
         Board* board;
         QTcpServer* server;
+        std::vector<std::string> messages;
+        pthread_mutex_t messagesMutex;
         //players
-        //threads
+        std::vector<Connection*> connections;
+
 
     private slots:
         void newPlayerRegistration();
