@@ -4,10 +4,15 @@
 #include <stdio.h>
 #include "../Commons/connectiondata.h"
 #include "../Commons/utils.h"
+#include "qwirkleserver.h"
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication app(argc, argv);
+
     stdout = freopen("server.log", "w", stdout);
+
+    cout<<"Running server..."<<endl;
 
     if(argc == 3) {
         try{
@@ -19,9 +24,9 @@ int main(int argc, char *argv[])
             cout<< cd->toString();
             cout<< "Players: " << players << endl;
 
-            QwirkleServer server = new QwirkleServer(cd, players);
+            QwirkleServer* server = new QwirkleServer(cd, players);
         } catch(exception e) {
-            cout<<"Invalid connection data "<<endl;
+            cout<<"Invalid connection data "<<e.what()<<endl;
             return 2;
         }
     } else {
@@ -29,5 +34,5 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    return 0;
+    return app.exec();
 }

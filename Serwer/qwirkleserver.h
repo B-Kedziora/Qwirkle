@@ -6,23 +6,29 @@
 #include <vector>
 #include <QTcpServer>
 #include <pthread.h>
-#include <connection.h>
+#include "connectionhandler.h"
+#include <iostream>
+#include <qobject.h>
 
-class QwirkleServer
+class QwirkleServer:QObject
 {
+
+    Q_OBJECT
+
     public:
         QwirkleServer(ConnectionData* cd, int players);
+        ~QwirkleServer();
 
     private:
         bool gameOngoing;
         int expectedPlayers;
         std::string owner;
-        Board* board;
+        //Board* board;
         QTcpServer* server;
         std::vector<std::string> messages;
         pthread_mutex_t messagesMutex;
         //players
-        std::vector<Connection*> connections;
+        std::vector<ConnectionHandler*> connections;
 
 
     private slots:
