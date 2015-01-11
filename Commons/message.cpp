@@ -72,3 +72,9 @@ void Message::debugPrint()
     }
     cout<<"Sender:"<<sender<<"\n"<<"Message:"<<mes<<endl;
 }
+
+string Message::toString()
+{
+    string rawMessage(to_string(type) + string(".") + sender + string(".") + mes);
+    return rawMessage;
+}

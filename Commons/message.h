@@ -16,6 +16,7 @@ public:
     string getMessage();
     string getSenderName();
     void debugPrint();
+    string toString();
 
     enum messageType{
         REGISTRATION,
