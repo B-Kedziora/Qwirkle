@@ -4,6 +4,7 @@
 #include "../Commons/player.h"
 #include "../Commons/utils.h"
 #include "../Commons/message.h"
+#include <playerhandler.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -31,9 +32,9 @@ private:
     bool gameOngoing;
     int expectedPlayers;
     int registeredPlayers;
-    vector<Message> messages;
+    vector<Message*> messages;
     pthread_mutex_t messagesMutex;
-    //vector<PlayerHandler*> playersConnections;
+    vector<PlayerHandler*> playersConnections;
     struct sockaddr_in serverData;
     int serverSocket;
 };

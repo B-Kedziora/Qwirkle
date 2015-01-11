@@ -2,6 +2,9 @@
 #define PLAYER_H
 
 #include <string>
+#include "../Commons/piece.h"
+#include <vector>
+
 using namespace std;
 
 class Player
@@ -15,6 +18,7 @@ public:
 private:
     int points;
     string name;
+    vector<Piece*> pieces;
 };
 
 #endif // PLAYER_H

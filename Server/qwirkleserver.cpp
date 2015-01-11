@@ -1,7 +1,9 @@
 #include "qwirkleserver.h"
 
 QwirkleServer::QwirkleServer(ConnectionData* cd, int players)
-{
+{ 
+    messagesMutex = PTHREAD_MUTEX_INITIALIZER;
+
     gameOngoing = false;
     expectedPlayers = players;
     registeredPlayers = 0;
@@ -38,7 +40,7 @@ QwirkleServer::QwirkleServer(ConnectionData* cd, int players)
     //BOARD
 
     Utils::printDate();
-    cout<<"Server started to listen for clients"<<endl;
+    cout<<"Server started to listen clients"<<endl;
 
     awaitPlayers();
     gameLoop();
@@ -46,7 +48,20 @@ QwirkleServer::QwirkleServer(ConnectionData* cd, int players)
 }
 
 void QwirkleServer::awaitPlayers(){
+    int socketLength = sizeof(struct sockaddr_in);
+    while(expectedPlayers > registeredPlayers) {
 
+        struct sockaddr_in client_addr;
+        int rcvSck;
+        if((rcvSck = accept(serverSocket, (struct sockaddr*) &client_addr, (socklen_t*) &socketLength)) < 0){
+            perror("ER");
+            exit(EXIT_FAILURE);
+        }
+
+        Utils::printDate();
+        cout<<"New player connected"<<endl;
+        playersConnections.push_back(new PlayerHandler(rcvSck, &messages, messagesMutex));
+    }
 }
 
 void QwirkleServer::gameLoop(){

@@ -16,5 +16,5 @@ std::string Utils::getDate()
 
 void Utils::printDate()
 {
-    std::cout<<Utils::getDate()<<std::endl;
+    std::cout<<"\n"<<Utils::getDate()<<std::endl;
 }

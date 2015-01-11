@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
             cout<< "\nSerwer process started with data: "<<endl;
             cout<< cd->toString();
             cout<< "Players: " << players << endl;
-            //new QwirkleServer(cd, players);
+            new QwirkleServer(cd, players);
 
         } else {
             cout<<"Server cannot be created due to lack of connection details passed as an argument"<<endl;
