@@ -44,3 +44,31 @@ string Message::getSenderName()
 {
     return sender;
 }
+
+void Message::debugPrint()
+{
+    switch(type){
+        case messageType::REGISTRATION:
+            cout<<"Type:REGISTRATION\n";
+            break;
+        case messageType::ALIVE:
+            cout<<"Type:ALIVE\n";
+            break;
+        case messageType::CHAT:
+            cout<<"Type:CHAT\n";
+            break;
+        case messageType::CONFIRM:
+            cout<<"Type:CONFIRM\n";
+            break;
+        case messageType::MOVE:
+            cout<<"Type:MOVE\n";
+            break;
+        case messageType::PIECE:
+            cout<<"Type:PIECE\n";
+            break;
+        case messageType::TURN:
+            cout<<"Type:TURN\n";
+            break;
+    }
+    cout<<"Sender:"<<sender<<"\n"<<"Message:"<<mes<<endl;
+}

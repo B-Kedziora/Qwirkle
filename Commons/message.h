@@ -15,6 +15,7 @@ public:
     short getType();
     string getMessage();
     string getSenderName();
+    void debugPrint();
 
     enum messageType{
         REGISTRATION,

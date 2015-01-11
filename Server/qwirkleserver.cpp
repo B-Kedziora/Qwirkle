@@ -37,7 +37,7 @@ QwirkleServer::QwirkleServer(ConnectionData* cd, int players)
         exit(EXIT_FAILURE);
     }
 
-    //BOARD
+    //BOARD init
 
     Utils::printDate();
     cout<<"Server started to listen clients"<<endl;

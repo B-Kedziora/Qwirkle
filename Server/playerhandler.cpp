@@ -2,7 +2,8 @@
 
 
 void* connect(void* args){
-    cout<<"createdNewThread!"<<endl;
+    ConnectionThreadArgs* ta = (ConnectionThreadArgs*) args;
+    new ConnectionHandler(ta);
     return NULL;
 }
 
@@ -22,6 +23,7 @@ PlayerHandler::PlayerHandler(int socket, std::vector<Message*> *recievedMessages
      player = ta->player;
      sendMutex = ta->sendMutex;
      this->receiveMutex = receiveMutex;
+     this->socket = socket;
 
      pthread_create(&connectionThread, NULL, connect, (void*)ta);
 }
@@ -35,9 +37,10 @@ void PlayerHandler::sendMessage(Message *mes)
 
 void PlayerHandler::discardPlayer()
 {
-    delete player;
     pthread_kill(connectionThread, SIGTERM);
     pthread_join(connectionThread, NULL);
+    delete player;
+    close(socket);
 }
 
 string PlayerHandler::getPlayerName()

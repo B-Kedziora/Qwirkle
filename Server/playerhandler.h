@@ -6,11 +6,12 @@
 #include <signal.h> //pthread_kill
 #include <../Commons/message.h>
 #include <../Commons/player.h>
+#include <unistd.h> //close
 #include <ConnectionThreadArgs.h>
+#include <connectionhandler.h>
 
 class PlayerHandler
 {
-public:
 public:
     PlayerHandler(int socket, std::vector<Message*>* recievedMessages, pthread_mutex_t receiveMutex);
     void sendMessage(Message* mes);
@@ -23,6 +24,7 @@ private:
     pthread_t connectionThread;
     pthread_mutex_t sendMutex;
     pthread_mutex_t receiveMutex;
+    int socket;
 };
 
 #endif // PLAYERHANDLER_H
