@@ -16,11 +16,12 @@ public:
     PlayerHandler(int socket, std::vector<Message*>* recievedMessages, pthread_mutex_t receiveMutex);
     void sendMessage(Message* mes);
     void discardPlayer();
-    std::string getPlayerName();
+    string getPlayerName();
+    void setPlayerName(string);
 
 private:
     Player* player;
-    std::vector<Message*>* toSend;
+    vector<Message*>* toSend;
     pthread_t connectionThread;
     pthread_mutex_t sendMutex;
     pthread_mutex_t receiveMutex;

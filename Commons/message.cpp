@@ -69,6 +69,8 @@ void Message::debugPrint()
         case messageType::TURN:
             cout<<"Type:TURN\n";
             break;
+        default:
+            cout<<"Type:OTHER\n";
     }
     cout<<"Sender:"<<sender<<"\n"<<"Message:"<<mes<<endl;
 }

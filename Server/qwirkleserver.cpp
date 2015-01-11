@@ -63,11 +63,13 @@ void QwirkleServer::awaitPlayers(){
         cout<<"New player connected"<<endl;
         playersConnections.push_back(new PlayerHandler(rcvSck, &messages, messagesMutex));
 
+        awaitPlayerIntroduction();
     }
 }
 
 void QwirkleServer::gameLoop(){
-
+    Utils::printDate();
+    cout<<"Server ready to play!";
 }
 
 void QwirkleServer::closeGame(){
@@ -84,5 +86,34 @@ bool QwirkleServer::isNameUnique(string name){
 
 void QwirkleServer::awaitPlayerIntroduction()
 {
+    clock_t start = clock();
+    float timedif;
 
+    while(1){
+
+        timedif = ((float)(clock() - start))/CLOCKS_PER_SEC;
+        if(timedif>REG_TIMEOUT)
+            cout<<"Player didn't introduced himself. Discarding"<<endl;
+
+        for(Message* mes : messages){
+
+            if(mes->getType() == mes->REGISTRATION){
+                string name = mes->getSenderName();
+                if(isNameUnique(name)){ // Accept player
+                    playersConnections.back()->setPlayerName(name); //Setting name means acceptance of player
+                    return;
+                } else  {                // Reject player
+
+                    Utils::printDate();
+                    cout<<"Player name is not unique. Closing connection."<<endl;
+
+                    playersConnections.back()->discardPlayer();
+                    playersConnections.pop_back();
+
+                    return;
+                }
+            }
+        }
+        usleep(500);
+    }
 }

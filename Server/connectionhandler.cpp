@@ -23,8 +23,9 @@ void ConnectionHandler::awaitAcceptation()
     while(42){
         readMessages();
         if(player->getName().compare("UNKNOWN") != 0){
+            Utils::printDate();
             cout<< "Player: " << player->getName() << " is accepted by server"<<endl;
-            //SEND MESSAGE
+            write(socket, "0.SERVER.A", 11);
             break;
         }
         usleep(10000);

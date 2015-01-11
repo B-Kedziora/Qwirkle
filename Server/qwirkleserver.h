@@ -16,6 +16,9 @@
 #include <string.h>
 #include <vector>
 #include <arpa/inet.h>
+#include <time.h>
+
+#define REG_TIMEOUT 0.5
 
 class QwirkleServer
 {
