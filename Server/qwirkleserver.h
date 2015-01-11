@@ -28,6 +28,7 @@ private:
     void gameLoop();
     void closeGame();
     bool isNameUnique(string name);
+    void awaitPlayerIntroduction();
 
     bool gameOngoing;
     int expectedPlayers;

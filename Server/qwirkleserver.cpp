@@ -53,6 +53,7 @@ void QwirkleServer::awaitPlayers(){
 
         struct sockaddr_in client_addr;
         int rcvSck;
+
         if((rcvSck = accept(serverSocket, (struct sockaddr*) &client_addr, (socklen_t*) &socketLength)) < 0){
             perror("ER");
             exit(EXIT_FAILURE);
@@ -61,6 +62,7 @@ void QwirkleServer::awaitPlayers(){
         Utils::printDate();
         cout<<"New player connected"<<endl;
         playersConnections.push_back(new PlayerHandler(rcvSck, &messages, messagesMutex));
+
     }
 }
 
@@ -73,5 +75,14 @@ void QwirkleServer::closeGame(){
 }
 
 bool QwirkleServer::isNameUnique(string name){
+    for(PlayerHandler* pl: playersConnections){
+        if(pl->getPlayerName().compare(name) == 0)
+            return false;
+    }
+    return true;
+}
+
+void QwirkleServer::awaitPlayerIntroduction()
+{
 
 }
