@@ -95,21 +95,25 @@ void QwirkleServer::awaitPlayerIntroduction()
         if(timedif>REG_TIMEOUT)
             cout<<"Player didn't introduced himself. Discarding"<<endl;
 
-        for(Message* mes : messages){
+        for(int i = 0; i < messages.size(); i++){
+            Message* mes = messages.at(i);
 
             if(mes->getType() == mes->REGISTRATION){
+                messages.erase(messages.begin() + i);   // Delete from vector, so it doesn't affect next registration
+
                 string name = mes->getSenderName();
                 if(isNameUnique(name)){ // Accept player
                     playersConnections.back()->setPlayerName(name); //Setting name means acceptance of player
+                    delete mes;
                     return;
                 } else  {                // Reject player
 
                     Utils::printDate();
-                    cout<<"Player name is not unique. Closing connection."<<endl;
+                    cout<<"Player name("<< mes->getSenderName() <<") is not unique. Closing connection."<<endl;
 
                     playersConnections.back()->discardPlayer();
                     playersConnections.pop_back();
-
+                    delete mes;
                     return;
                 }
             }

@@ -3,8 +3,8 @@
 
 using namespace std;
 
-StartDialog::StartDialog(QWidget *parent, ConnectionData** connectionData, bool* host, int* players):
-    QDialog(parent),
+StartDialog::StartDialog(ConnectionData** connectionData, bool* host, int* players):
+    QDialog(NULL),
     ui(new Ui::StartDialog)
 {
     ui->setupUi(this);

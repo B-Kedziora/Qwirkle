@@ -5,6 +5,7 @@
 #include "Commons/connectiondata.h"
 #include <string>
 #include <iostream>
+#include <connection.h>
 
 namespace Ui {
 class StartDialog;
@@ -15,7 +16,7 @@ class StartDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit StartDialog(QWidget *parent, ConnectionData** connectionData, bool* host, int* players);
+    explicit StartDialog(ConnectionData** connectionData, bool* host, int* players);
     ~StartDialog();
 
 private slots:
