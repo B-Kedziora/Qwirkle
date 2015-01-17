@@ -8,7 +8,15 @@ Game::Game(Widget* widget)
 }
 
 void Game::receiveMessage(Message *mes){
+    switch(mes->getType()) {
 
+        case Message::CHAT:
+            widget->receiveChatMessage(mes);
+        break;
+
+        default:
+            break;
+    }
 }
 
 void Game::receivePlayers(std::vector<string> players) {

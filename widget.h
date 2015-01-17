@@ -18,6 +18,7 @@ class Widget : public QWidget
 
 public:
     explicit Widget(QWidget *parent = 0);
+    void receiveChatMessage(Message* mes);
     ~Widget();
 
 private slots:

@@ -11,6 +11,11 @@ Widget::Widget(QWidget *parent) :
     connection = new Connection(&chatName, game);
 }
 
+void Widget::receiveChatMessage(Message *mes)
+{
+    ui->MessageLog->append(QString::fromStdString(mes->getSenderName() + string(": ") + mes->getMessage()));
+}
+
 Widget::~Widget()
 {
     delete ui;

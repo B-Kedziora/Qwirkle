@@ -64,7 +64,7 @@ void Connection::readAnswer()
 {
     QByteArray message = socket->readAll();
     Message* mes = new Message(string(message.data()));
-    mes->debugPrint();
+    receiver->receiveMessage(mes);
 }
 
 void Connection::disconnected()
