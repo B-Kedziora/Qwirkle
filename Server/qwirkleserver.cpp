@@ -60,7 +60,7 @@ void QwirkleServer::awaitPlayers(){
         }
 
         Utils::printDate();
-        cout<<"New player connected"<<endl;
+        cout<<"New player connected at socket: "<<rcvSck<<endl;
         playersConnections.push_back(new PlayerHandler(rcvSck, &messages, messagesMutex));
 
         awaitPlayerIntroduction();
@@ -104,8 +104,6 @@ void QwirkleServer::awaitPlayerIntroduction()
                 string name = mes->getSenderName();
                 if(isNameUnique(name)){ // Accept player
                     playersConnections.back()->setPlayerName(name); //Setting name means acceptance of player
-                    delete mes;
-                    return;
                 } else  {                // Reject player
 
                     Utils::printDate();
@@ -113,9 +111,10 @@ void QwirkleServer::awaitPlayerIntroduction()
 
                     playersConnections.back()->discardPlayer();
                     playersConnections.pop_back();
-                    delete mes;
-                    return;
                 }
+
+                delete mes;
+                return;
             }
         }
         usleep(500);

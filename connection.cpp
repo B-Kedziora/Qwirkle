@@ -2,9 +2,10 @@
 
 #include <QTcpSocket>
 
-Connection::Connection(QObject *parent) :
+Connection::Connection(MessageReceiver* receiver, QObject *parent) :
     QObject(parent)
 {
+    this->receiver = receiver;
     conData = nullptr;
     bool hostingGame;
     int players;
@@ -28,12 +29,14 @@ Connection::Connection(QObject *parent) :
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(connected()), this, SLOT(socketConnected()));
     connect(socket, SIGNAL(readyRead()), this, SLOT(readAnswer()));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     socket->connectToHost(QString::fromStdString(conData->getIp()), (quint16) conData->getPort());
 }
 
 void Connection::socketError(QAbstractSocket::SocketError)
 {
-    // Notify widget about that
+    ErrorDialog* dialog = new ErrorDialog(QString::fromStdString("Server connection error"));
+    dialog->exec();
 }
 
 void Connection::socketConnected()
@@ -49,4 +52,10 @@ void Connection::socketConnected()
 void Connection::readAnswer()
 {
 
+}
+
+void Connection::disconnected()
+{
+    ErrorDialog* dialog = new ErrorDialog(QString::fromStdString("Disconnected from server. If you can't start game try changing user name."));
+    dialog->exec();
 }

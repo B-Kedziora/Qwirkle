@@ -7,7 +7,8 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    connection = new Connection();
+    Game* game = new Game();
+    connection = new Connection(game);
 }
 
 Widget::~Widget()

@@ -22,7 +22,10 @@ SOURCES += main.cpp\
     Commons/utils.cpp \
     Commons/player.cpp \
     Commons/message.cpp \
-    connection.cpp
+    connection.cpp \
+    messagereceiver.cpp \
+    game.cpp \
+    errordialog.cpp
 
 HEADERS  += widget.h \
     startdialog.h \
@@ -33,10 +36,14 @@ HEADERS  += widget.h \
     Commons/utils.h \
     Commons/player.h \
     Commons/message.h \
-    connection.h
+    connection.h \
+    messagereceiver.h \
+    game.h \
+    errordialog.h
 
 FORMS    += widget.ui \
-    startdialog.ui
+    startdialog.ui \
+    errordialog.ui
 
 QMAKE_CXXFLAGS += -std=c++0x
 

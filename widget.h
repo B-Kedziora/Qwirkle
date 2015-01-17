@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <connection.h>
+#include "game.h"
 
 namespace Ui {
 class Widget;

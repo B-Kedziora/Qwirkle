@@ -37,10 +37,10 @@ void PlayerHandler::sendMessage(Message *mes)
 
 void PlayerHandler::discardPlayer()
 {
+    close(socket);
     pthread_kill(connectionThread, SIGTERM);
     pthread_join(connectionThread, NULL);
     delete player;
-    close(socket);
 }
 
 string PlayerHandler::getPlayerName()
