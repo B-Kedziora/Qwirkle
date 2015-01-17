@@ -51,7 +51,9 @@ void Connection::socketConnected()
 
 void Connection::readAnswer()
 {
-
+    QByteArray message = socket->readAll();
+    Message* mes = new Message(string(message.data()));
+    mes->debugPrint();
 }
 
 void Connection::disconnected()

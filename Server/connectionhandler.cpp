@@ -30,17 +30,33 @@ void ConnectionHandler::awaitAcceptation()
         }
         usleep(10000);
     }
+
     mainLoop();
 }
 
 void ConnectionHandler::mainLoop()
 {
-
+    while(1) {
+        readMessages();
+        sendMessages();
+        usleep(10000);
+    }
 }
 
 void ConnectionHandler::sendMessages()
 {
+    for(int i = toSend->size() - 1; i >= 0; i--) {
+        Message* message = toSend->at(i);
+        string mes = message->toString();
+        write(socket, mes.c_str(), mes.length());
 
+        pthread_mutex_lock(&sendMutex);
+        toSend->erase(toSend->begin() + i);
+        pthread_mutex_unlock(&sendMutex);
+
+        Utils::printDate();
+        cout<< "Sended message to: "<< player->getName() << "\nMessage: " << mes <<endl;
+    }
 }
 
 void ConnectionHandler::readMessages()
@@ -49,8 +65,13 @@ void ConnectionHandler::readMessages()
     if(rawMessages != nullptr) {
         for(string mes : *rawMessages){
             pthread_mutex_lock(&receiveMutex);
-            receivedMessages->push_back(new Message(mes));
+            Message* message = new Message(mes);
+            receivedMessages->push_back(message);
             pthread_mutex_unlock(&receiveMutex);
+
+            Utils::printDate();
+            cout<< "Received: \n";
+            message->debugPrint();
         }
     }
 }

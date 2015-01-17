@@ -51,8 +51,8 @@ void Message::debugPrint()
         case messageType::REGISTRATION:
             cout<<"Type:REGISTRATION\n";
             break;
-        case messageType::ALIVE:
-            cout<<"Type:ALIVE\n";
+        case messageType::PLAYER_LIST:
+            cout<<"Type:PLAYER_LIST\n";
             break;
         case messageType::CHAT:
             cout<<"Type:CHAT\n";
