@@ -15,10 +15,13 @@ public:
     int getPoints();
     void setName(string newName);
     string getName();
+    int getPieceCount();
+    void givePices(int count);
+    void takePieces(int count);
 private:
     int points;
     string name;
-    vector<Piece*> pieces;
+    int pieceCount;
 };
 
 #endif // PLAYER_H

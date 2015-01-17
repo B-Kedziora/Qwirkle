@@ -43,6 +43,22 @@ void PlayerHandler::discardPlayer()
     delete player;
 }
 
+void PlayerHandler::givePieces(vector<Piece*> pieces)
+{
+    player->givePieces(pieces.size());
+
+    string mes;
+    for(Piece* piece : pieces) {
+        mes += to_string(piece->getColor());
+        mes += string(".");
+        mes += to_string(piece->getShape());
+        mes += string(".");
+    }
+
+    Message* message = new Message(Message::PIECE, mes, string("SERVER"));
+    sendMessage(message);
+}
+
 string PlayerHandler::getPlayerName()
 {
     return player->getName();

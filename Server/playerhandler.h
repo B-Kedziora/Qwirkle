@@ -15,6 +15,7 @@ class PlayerHandler
 public:
     PlayerHandler(int socket, std::vector<Message*>* recievedMessages, pthread_mutex_t receiveMutex);
     void sendMessage(Message* mes);
+    void givePieces(vector<Piece*> pieces);
     void discardPlayer();
     string getPlayerName();
     void setPlayerName(string);
