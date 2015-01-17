@@ -14,7 +14,8 @@ SOURCES += main.cpp \
     playerhandler.cpp \
     connectionhandler.cpp \
     chat.cpp \
-    ../Commons/drop.cpp
+    ../Commons/drop.cpp \
+    piecesack.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -31,7 +32,8 @@ HEADERS += \
     ConnectionThreadArgs.h \
     connectionhandler.h \
     chat.h \
-    ../Commons/drop.h
+    ../Commons/drop.h \
+    piecesack.h
 
 QMAKE_CXXFLAGS += -std=c++0x -pthread
 LIBS += -pthread
