@@ -4,13 +4,19 @@
 class Piece
 {
 public:
+    enum Feature {
+        COLOR,
+        SHAPE
+    };
+
     enum pieceColor{
         BLUE,
         YELLOW,
         ORANGE,
         RED,
         GREEN,
-        PURPLE
+        PURPLE,
+        NONE
     };
 
     enum pieceShape{
@@ -19,15 +25,20 @@ public:
         STAR,
         DIAMOND,
         FLOWER,
-        SHURIKEN
+        SHURIKEN,
+        EMPTY
     };
 
+    Piece();
     Piece(short color, short shape);
     short getColor();
     short getShape();
+    short getFeature(Feature feature);
+    bool isEmpty();
+    bool isEqual(Piece that);
+
 private:
-    short color;
-    short shape;
+    short features[2];
 };
 
 #endif // PIECE_H
