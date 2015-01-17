@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <connection.h>
+class Widget;
 #include "game.h"
 
 namespace Ui {
@@ -19,12 +20,17 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
+private slots:
+    void on_SendButton_clicked();
+
+    void on_MessageInput_returnPressed();
+
 private:
+    void sendChatMessage();
+
     Ui::Widget *ui;
-    std::string name_;
-    std::string ip_;
-    signed short int port_;
     Connection* connection;
+    string chatName;
 };
 
 #endif // WIDGET_H

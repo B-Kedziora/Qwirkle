@@ -2,7 +2,7 @@
 
 #include <QTcpSocket>
 
-Connection::Connection(MessageReceiver* receiver, QObject *parent) :
+Connection::Connection(string* chatName, MessageReceiver* receiver, QObject *parent) :
     QObject(parent)
 {
     this->receiver = receiver;
@@ -12,6 +12,8 @@ Connection::Connection(MessageReceiver* receiver, QObject *parent) :
 
     StartDialog* dialog = new StartDialog(&conData, &hostingGame, &players);
     dialog->exec();
+
+    *chatName = conData->getName();
 
     if(hostingGame) {
         QStringList arg;
@@ -31,6 +33,15 @@ Connection::Connection(MessageReceiver* receiver, QObject *parent) :
     connect(socket, SIGNAL(readyRead()), this, SLOT(readAnswer()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     socket->connectToHost(QString::fromStdString(conData->getIp()), (quint16) conData->getPort());
+}
+
+void Connection::sendMessage(Message *message)
+{
+    QString mes = QString::fromStdString(message->toString());
+    QByteArray qb = mes.toLatin1();
+    char* encMes = qb.data();
+
+    socket -> write(encMes);
 }
 
 void Connection::socketError(QAbstractSocket::SocketError)

@@ -13,7 +13,8 @@ SOURCES += main.cpp \
     ../Commons/message.cpp \
     playerhandler.cpp \
     connectionhandler.cpp \
-    chat.cpp
+    chat.cpp \
+    ../Commons/drop.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -29,7 +30,8 @@ HEADERS += \
     playerhandler.h \
     ConnectionThreadArgs.h \
     connectionhandler.h \
-    chat.h
+    chat.h \
+    ../Commons/drop.h
 
 QMAKE_CXXFLAGS += -std=c++0x -pthread
 LIBS += -pthread

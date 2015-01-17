@@ -2,8 +2,9 @@
 
 using namespace std;
 
-Game::Game()
+Game::Game(Widget* widget)
 {
+    this->widget = widget;
 }
 
 void Game::receiveMessage(Message *mes){

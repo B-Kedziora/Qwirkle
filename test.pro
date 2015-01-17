@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     connection.cpp \
     messagereceiver.cpp \
     game.cpp \
-    errordialog.cpp
+    errordialog.cpp \
+    Commons/drop.cpp
 
 HEADERS  += widget.h \
     startdialog.h \
@@ -39,7 +40,8 @@ HEADERS  += widget.h \
     connection.h \
     messagereceiver.h \
     game.h \
-    errordialog.h
+    errordialog.h \
+    Commons/drop.h
 
 FORMS    += widget.ui \
     startdialog.ui \

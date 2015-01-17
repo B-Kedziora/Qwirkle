@@ -14,7 +14,8 @@ class Connection : public QObject
 {
     Q_OBJECT
 public:
-    explicit Connection(MessageReceiver* receiver, QObject *parent = 0);
+    explicit Connection(string* chatName, MessageReceiver* receiver, QObject *parent = 0);
+    void sendMessage(Message* message);
 
 private:
     QTcpSocket* socket;

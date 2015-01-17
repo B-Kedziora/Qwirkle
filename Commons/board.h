@@ -1,10 +1,10 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <Commons/piece.h>
+#include "../Commons/piece.h"
 #include <algorithm>
 #include <vector>
-#include <Commons/drop.h>
+#include "../Commons/drop.h"
 
 /**
  * @brief The Board class represents the state of the game. Every
