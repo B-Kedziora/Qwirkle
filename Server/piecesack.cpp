@@ -9,8 +9,7 @@ PieceSack::PieceSack()
             }
         }
     }
-    srand ( unsigned(time(0)) );
-    random_shuffle ( pieces.begin(), pieces.end() );
+    reshuffle();
 }
 
 Piece* PieceSack::getPiece()
@@ -22,6 +21,25 @@ Piece* PieceSack::getPiece()
     } else {
         return nullptr;
     }
+}
+
+void PieceSack::returnPiece(Piece *piece)
+{
+    pieces.push_back(piece);
+    reshuffle();
+}
+
+void PieceSack::returnPiece(vector<Piece *> retPieces)
+{
+    pieces.reserve( pieces.size() + retPieces.size() );
+    pieces.insert( pieces.end(), retPieces.begin(), retPieces.end() );
+    reshuffle();
+}
+
+void PieceSack::reshuffle()
+{
+    srand ( unsigned(time(0)) );
+    random_shuffle ( pieces.begin(), pieces.end() );
 }
 
 vector<Piece*>* PieceSack::getPiece(int pieces)

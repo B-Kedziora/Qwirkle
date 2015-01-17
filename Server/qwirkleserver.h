@@ -4,6 +4,7 @@
 #include "../Commons/player.h"
 #include "../Commons/utils.h"
 #include "../Commons/message.h"
+#include "piecesack.h"
 #include <playerhandler.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -38,6 +39,7 @@ private:
     void sendPlayerList();
 
     Chat* chat;
+    PieceSack* pieceSack;
     bool gameOngoing;
     int expectedPlayers;
     vector<Message*> messages;

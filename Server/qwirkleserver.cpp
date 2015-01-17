@@ -4,6 +4,7 @@ QwirkleServer::QwirkleServer(ConnectionData* cd, int players)
 { 
     messagesMutex = PTHREAD_MUTEX_INITIALIZER;
     chat = new Chat(&messages, messagesMutex, &playersConnections);
+    pieceSack = new PieceSack();
 
     gameOngoing = false;
     expectedPlayers = players;
