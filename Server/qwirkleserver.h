@@ -17,6 +17,9 @@
 #include <vector>
 #include <arpa/inet.h>
 #include <time.h>
+#include <chat.h>
+#include <chrono>
+#include <thread>
 
 #define REG_TIMEOUT 0.5
 
@@ -34,6 +37,7 @@ private:
     void awaitPlayerIntroduction();
     void sendPlayerList();
 
+    Chat* chat;
     bool gameOngoing;
     int expectedPlayers;
     vector<Message*> messages;

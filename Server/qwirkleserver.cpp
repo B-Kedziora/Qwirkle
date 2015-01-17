@@ -3,6 +3,7 @@
 QwirkleServer::QwirkleServer(ConnectionData* cd, int players)
 { 
     messagesMutex = PTHREAD_MUTEX_INITIALIZER;
+    chat = new Chat(&messages, messagesMutex, &playersConnections);
 
     gameOngoing = false;
     expectedPlayers = players;
@@ -71,6 +72,10 @@ void QwirkleServer::awaitPlayers(){
 void QwirkleServer::gameLoop(){
     Utils::printDate();
     cout<<"Server ready to play!";
+    while(1){
+        chat->serveChat();
+        this_thread::sleep_for(chrono::milliseconds(10));
+    }
 }
 
 void QwirkleServer::closeGame(){
@@ -119,7 +124,7 @@ void QwirkleServer::awaitPlayerIntroduction()
             }
 
         }
-        usleep(500);
+        this_thread::sleep_for(chrono::milliseconds(10));
     }
 }
 
