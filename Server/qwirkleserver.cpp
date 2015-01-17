@@ -6,7 +6,6 @@ QwirkleServer::QwirkleServer(ConnectionData* cd, int players)
 
     gameOngoing = false;
     expectedPlayers = players;
-    registeredPlayers = 0;
 
     bzero(&serverData, sizeof serverData);          // Zeroing structure
     serverData.sin_addr.s_addr = INADDR_ANY;        // Na każdym porcie komputera
@@ -49,7 +48,7 @@ QwirkleServer::QwirkleServer(ConnectionData* cd, int players)
 
 void QwirkleServer::awaitPlayers(){
     int socketLength = sizeof(struct sockaddr_in);
-    while(expectedPlayers > registeredPlayers) {
+    while(playersConnections.size() < expectedPlayers) {
 
         struct sockaddr_in client_addr;
         int rcvSck;
@@ -65,6 +64,8 @@ void QwirkleServer::awaitPlayers(){
 
         awaitPlayerIntroduction();
     }
+
+    sendPlayerList();
 }
 
 void QwirkleServer::gameLoop(){
@@ -116,7 +117,26 @@ void QwirkleServer::awaitPlayerIntroduction()
                 delete mes;
                 return;
             }
+
         }
         usleep(500);
     }
+}
+
+void QwirkleServer::sendPlayerList()
+{
+    // LIST CREATION
+    string message = "";
+    for(PlayerHandler* player : playersConnections) {
+        message += player->getPlayerName() + ".";
+    }
+
+    // SENDING
+    for(PlayerHandler* player: playersConnections) {    // creates new message in loop, cause sended messages are deleted by thread
+        player->sendMessage(new Message(Message::messageType::PLAYER_LIST, message, "SERVER"));
+    }
+
+    Utils::printDate();
+    cout<<"Sended player list: \n";
+    cout<<Message::messageType::PLAYER_LIST<<"."<<"SERVER."<<message<<endl;
 }

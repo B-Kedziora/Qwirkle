@@ -20,12 +20,12 @@ public:
 
     enum messageType{
         REGISTRATION,
+        PLAYER_LIST,
         CHAT,
         MOVE,
         TURN,
         PIECE,
-        CONFIRM,
-        ALIVE
+        CONFIRM
     };
 
 private:

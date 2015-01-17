@@ -32,10 +32,10 @@ private:
     void closeGame();
     bool isNameUnique(string name);
     void awaitPlayerIntroduction();
+    void sendPlayerList();
 
     bool gameOngoing;
     int expectedPlayers;
-    int registeredPlayers;
     vector<Message*> messages;
     pthread_mutex_t messagesMutex;
     vector<PlayerHandler*> playersConnections;
