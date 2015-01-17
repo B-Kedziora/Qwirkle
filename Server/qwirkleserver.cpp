@@ -68,6 +68,11 @@ void QwirkleServer::awaitPlayers(){
     }
 
     sendPlayerList();
+
+    //GIVE INITIAL PIECES
+    for(PlayerHandler* handler : playersConnections) {
+        givePieces(handler);
+    }
 }
 
 void QwirkleServer::gameLoop(){
@@ -145,4 +150,13 @@ void QwirkleServer::sendPlayerList()
     Utils::printDate();
     cout<<"Sended player list: \n";
     cout<<Message::messageType::PLAYER_LIST<<"."<<"SERVER."<<message<<endl;
+}
+
+void QwirkleServer::givePieces(PlayerHandler *player)
+{
+    int ownPieces = player->getPlayer()->getPoints();
+
+    vector<Piece*>* pieces = pieceSack->getPiece(6 - ownPieces);
+
+    player->givePieces(*pieces);
 }

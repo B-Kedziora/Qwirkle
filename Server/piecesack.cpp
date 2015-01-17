@@ -44,18 +44,18 @@ void PieceSack::reshuffle()
 
 vector<Piece*>* PieceSack::getPiece(int pieces)
 {
-    vector<Piece*> pieceVec;
+    vector<Piece*>* pieceVec = new vector<Piece*>();
     for(int i = 0; i < pieces; i++) {
         Piece* piece = getPiece();
         if(piece == nullptr) {
             break;
         } else {
-            pieceVec.push_back(piece);
+            pieceVec->push_back(piece);
         }
     }
 
-    if(pieceVec.size() != 0)
-        return &pieceVec;
+    if(pieceVec->size() != 0)
+        return pieceVec;
     else
         return nullptr;
 }

@@ -18,6 +18,7 @@ public:
     void givePieces(vector<Piece*> pieces);
     void discardPlayer();
     string getPlayerName();
+    Player* getPlayer();
     void setPlayerName(string);
 
 private:

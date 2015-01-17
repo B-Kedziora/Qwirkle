@@ -14,7 +14,7 @@ class PieceSack
 public:
     PieceSack();
     Piece* getPiece();
-    vector<Piece*> getPiece(int pieces);
+    vector<Piece*>* getPiece(int pieces);
     void returnPiece(Piece* piece);
     void returnPiece(vector<Piece*> pieces);
 private:

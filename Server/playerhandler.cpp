@@ -64,6 +64,11 @@ string PlayerHandler::getPlayerName()
     return player->getName();
 }
 
+Player *PlayerHandler::getPlayer()
+{
+    return player;
+}
+
 void PlayerHandler::setPlayerName(string name)
 {
     player->setName(name);
