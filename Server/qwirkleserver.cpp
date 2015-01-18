@@ -25,7 +25,7 @@ QwirkleServer::QwirkleServer(ConnectionData* cd, int players)
     setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof opt);
 
     //Bind socket to address
-    if( bind(serverSocket, (struct sockaddr*) &serverData, sizeof serverData) < 0 ) {
+    if( ::bind(serverSocket, (struct sockaddr*) &serverData, sizeof serverData) < 0 ) {
         perror(NULL);
         cout<<"Server creation failure"<<endl;
         exit(EXIT_FAILURE);

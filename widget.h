@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <connection.h>
+#include <QStandardItemModel>
+
 class Widget;
 #include "game.h"
 

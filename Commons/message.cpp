@@ -16,12 +16,7 @@ Message::Message(string message)
         type = stoi(string(tokens));
         tokens = strtok(NULL, ".");
         sender = string(tokens);
-        tokens = strtok(NULL, ".");
-        mes = "";
-        while(tokens) {
-            mes += string(tokens);
-            tokens = strtok(NULL, ".");
-        }
+        mes = strtok(NULL, "\0");
 
     } catch(exception e) {
         Utils::printDate();
@@ -38,6 +33,20 @@ short Message::getType()
 string Message::getMessage()
 {
     return mes;
+}
+
+vector<string> Message::getMessageTokens() {
+    vector<string> tokens;
+    string text = mes;
+    if (text[text.size() - 1] == '.') {
+        text.resize(text.size() - 1);
+    }
+    char *token = strtok(const_cast<char*>(text.c_str()), ".");
+    while(token) {
+        tokens.push_back(string(token));
+        token = strtok(NULL, "");
+    }
+    return tokens;
 }
 
 string Message::getSenderName()

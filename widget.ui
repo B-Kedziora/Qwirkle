@@ -137,15 +137,24 @@
     </rect>
    </property>
   </widget>
-  <widget class="QListView" name="ScoreList">
+  <widget class="QTableView" name="ScoreView">
    <property name="geometry">
     <rect>
-     <x>630</x>
-     <y>30</y>
-     <width>151</width>
+     <x>625</x>
+     <y>31</y>
+     <width>161</width>
      <height>181</height>
     </rect>
    </property>
+   <property name="showGrid">
+    <bool>true</bool>
+   </property>
+   <attribute name="horizontalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

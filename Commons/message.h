@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring>
 #include <iostream>
+#include <vector>
 #include "../Commons/utils.h"
 
 using namespace std;
@@ -14,6 +15,7 @@ public:
     Message(string message);
     short getType();
     string getMessage();
+    vector<string> getMessageTokens();
     string getSenderName();
     void debugPrint();
     string toString();
