@@ -6,10 +6,9 @@
 #include "Commons/board.h"
 #include "widget.h"
 #include <vector>
-#include <string>
-#include <map>
 #include <sstream>
 #include <QTableView>
+#include <QStandardItemModel>
 
 class Game : public MessageReceiver
 {
@@ -17,15 +16,14 @@ public:
     Game(Widget* widget);
     void receiveMessage(Message* mes);
     void receivePlayers(std::vector<string>);
-    void receivePieces(std::vector<Piece> pieces);
+    void receivePieces(string message_text);
     void executeMove(string name, vector<Drop>);
-    void viewScore();
 
 private:
     Widget* widget;
+    QTableWidget* board_widget;
     Board board;
     std::vector<Piece> available_pieces;
-    map<string, int> score;
     QStandardItemModel score_model;
 };
 

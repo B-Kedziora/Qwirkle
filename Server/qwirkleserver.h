@@ -37,7 +37,8 @@ private:
     bool isNameUnique(string name);
     void awaitPlayerIntroduction();
     void sendPlayerList();
-    void givePieces(PlayerHandler* player);
+    void sendTurnMessage(int index);
+    void givePieces(int index);
 
     Chat* chat;
     PieceSack* pieceSack;

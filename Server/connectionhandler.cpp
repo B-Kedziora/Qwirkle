@@ -45,18 +45,19 @@ void ConnectionHandler::mainLoop()
 
 void ConnectionHandler::sendMessages()
 {
-    for(int i = toSend->size() - 1; i >= 0; i--) {
-        Message* message = toSend->at(i);
-        string mes = message->toString();
-        write(socket, mes.c_str(), mes.length());
+    if (toSend->size() == 0)
+        return;
+    Message* message = toSend->front();
+    string mes = message->toString();
+    write(socket, mes.c_str(), mes.length());
 
-        pthread_mutex_lock(&sendMutex);
-        toSend->erase(toSend->begin() + i);
-        pthread_mutex_unlock(&sendMutex);
+    pthread_mutex_lock(&sendMutex);
+    delete message;
+    pthread_mutex_unlock(&sendMutex);
 
-        Utils::printDate();
-        cout<< "Sended message to: "<< player->getName() << "\nMessage: " << mes <<endl;
-    }
+    Utils::printDate();
+    cout<< "Sended message to: "<< player->getName() << "\nMessage: " << mes <<endl;
+    return;
 }
 
 void ConnectionHandler::readMessages()

@@ -5,6 +5,7 @@ using namespace std;
 Game::Game(Widget* widget)
 {
     this->widget = widget;
+    board_widget = widget->findChild<QTableWidget*>("BoardWidget");
 }
 
 void Game::receiveMessage(Message *mes){
@@ -16,6 +17,11 @@ void Game::receiveMessage(Message *mes){
         case Message::PLAYER_LIST:
             receivePlayers(mes->getMessageTokens());
         break;
+        case Message::PIECE:
+            receivePieces(mes->getMessage());
+        break;
+        case Message::TURN:
+            widget->setTurn(mes->getMessage());
         default:
             break;
     }
@@ -34,19 +40,21 @@ void Game::receivePlayers(vector<string> players) {
         index++;
     }
     score_view->setModel(&score_model);
-    QList<QStandardItem*> list = score_model.findItems(QString::fromStdString(players[0]));
-    for (QStandardItem* name : list) {
-        int points = 5;
-        int row = score_model.indexFromItem(name).row();
-        QStandardItem* score = score_model.item(row, 1);
-        score->setText(QString::number(score->text().toInt() + points));
-    }
 }
 
-void Game::receivePieces(vector<Piece> pieces) {
-    for (Piece piece : pieces) {
-        available_pieces.push_back(piece);
+void Game::receivePieces(string message_text) {
+    stringstream piece_message(message_text);
+    short color, shape;
+    char dot;
+    vector<Piece> pieces;
+    for (int i = 0; i < 6; i++){
+        piece_message >> color;
+        piece_message >> dot;
+        piece_message >> shape;
+        piece_message >> dot;
+        pieces.push_back(Piece(color, shape));
     }
+    widget->receivePieces(pieces);
 }
 
 void Game::executeMove(string name, vector<Drop> drops) {
