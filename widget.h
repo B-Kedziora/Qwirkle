@@ -24,8 +24,9 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = 0);
     void receiveChatMessage(Message* mes);
+    void receiveExchangeMessage(Message* message);
     void receivePieces(vector<Piece> pieces);
-    void setTurn(string playername);
+    void setTurn(string message);
     ~Widget();
 
 private slots:
@@ -36,6 +37,8 @@ private slots:
     void on_PiecesWidget_itemSelectionChanged();
 
     void on_pushButton_clicked();
+
+    void on_ExchangeButton_clicked();
 
 private:
     void sendChatMessage();

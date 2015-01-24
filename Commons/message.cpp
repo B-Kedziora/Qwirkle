@@ -78,6 +78,9 @@ void Message::debugPrint()
         case messageType::TURN:
             cout<<"Type:TURN\n";
             break;
+        case messageType::EXCHANGE:
+            cout<<"Type:EXCHANGE\n";
+            break;
         default:
             cout<<"Type:OTHER\n";
     }

@@ -22,6 +22,9 @@ void Game::receiveMessage(Message *mes){
         break;
         case Message::TURN:
             widget->setTurn(mes->getMessage());
+        break;
+        case Message::EXCHANGE:
+            widget->receiveExchangeMessage(mes);
         default:
             break;
     }

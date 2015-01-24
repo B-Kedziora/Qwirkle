@@ -25,7 +25,7 @@ void ConnectionHandler::awaitAcceptation()
         if(player->getName().compare("UNKNOWN") != 0){
             Utils::printDate();
             cout<< "Player: " << player->getName() << " is accepted by server"<<endl;
-            write(socket, "0.SERVER.A", 11);
+            write(socket, "0.SERVER.A\n", 11);
             break;
         }
         usleep(10000);
@@ -48,11 +48,11 @@ void ConnectionHandler::sendMessages()
     if (toSend->size() == 0)
         return;
     Message* message = toSend->front();
-    string mes = message->toString();
+    string mes = message->toString() + string("\n");
     write(socket, mes.c_str(), mes.length());
 
     pthread_mutex_lock(&sendMutex);
-    delete message;
+    toSend->erase(toSend->begin());
     pthread_mutex_unlock(&sendMutex);
 
     Utils::printDate();

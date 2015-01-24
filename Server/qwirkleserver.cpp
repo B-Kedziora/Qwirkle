@@ -81,23 +81,46 @@ void QwirkleServer::gameLoop(){
     int player_index = 0;
     sendTurnMessage(player_index);
     while (1) {
-        for (int i = 0; i < messages.size(); i++){
-            Message* message = messages.at(i);
+        chat->serveChat();
+        if (messages.size() > 0) {
+            Message* message = messages.front();
             int type = message->getType();
             if (type == message->PIECE) {
-                Utils::printDate();
-                cout<<"Player exchanged pieces: "<<message->getMessage()<<endl;
-                //sendMoveMessage(message);
-                givePieces(player_index);
-                player_index = (player_index + 1) % playersConnections.size();
-                sendTurnMessage(player_index);
+                servePieceMessage(message, player_index);
             }
+            player_index = (player_index + 1) % playersConnections.size();
+            sendTurnMessage(player_index);
+            messages.erase(messages.begin());
             delete message;
-            return;
         }
-        chat->serveChat();
         this_thread::sleep_for(chrono::milliseconds(10));
     }
+}
+
+void QwirkleServer::servePieceMessage(Message* message, int player_index) {
+    Utils::printDate();
+    cout<<"Player exchanged pieces: "<<message->getMessage()<<endl;
+
+    int count = message->getMessage().size() / 4;
+    playersConnections[player_index]->getPlayer()->takePieces(count);
+    stringstream stream(message->getMessage());
+    vector<Piece*> pieces;
+    for (int i = 0; i < count; i++) {
+        short color;
+        short shape;
+        char dot;
+        stream >> color;
+        stream >> dot;
+        stream >> shape;
+        stream >> dot;
+        pieces.push_back(new Piece(color, shape));
+    }
+    pieceSack->returnPiece(pieces);
+    givePieces(player_index);
+
+    Message* exchange_message =
+            new Message(Message::messageType::EXCHANGE, to_string(count), message->getSenderName());
+    sendMessageToAll(exchange_message);
 }
 
 void QwirkleServer::closeGame() {
@@ -168,7 +191,7 @@ void QwirkleServer::sendPlayerList() {
 
 void QwirkleServer::sendTurnMessage(int index) {
     PlayerHandler* playing_player = playersConnections[index];
-    string message = playing_player->getPlayerName();
+    string message = playing_player->getPlayerName() + ".";
     for (PlayerHandler* player: playersConnections) {
         player->sendMessage(new Message(Message::messageType::TURN, message, "SERVER"));
     }
@@ -179,7 +202,13 @@ void QwirkleServer::sendTurnMessage(int index) {
 
 void QwirkleServer::givePieces(int index) {
     PlayerHandler* player = playersConnections[index];
-    int ownPieces = player->getPlayer()->getPoints();
+    int ownPieces = player->getPlayer()->getPieceCount();
     vector<Piece*>* pieces = pieceSack->getPiece(6 - ownPieces);
     player->givePieces(*pieces);
+}
+
+void QwirkleServer::sendMessageToAll(Message* message) {
+    for (PlayerHandler* player: playersConnections) {
+        player->sendMessage(message);
+    }
 }

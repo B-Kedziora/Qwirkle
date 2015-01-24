@@ -27,7 +27,8 @@ public:
         MOVE,
         TURN,
         PIECE,
-        CONFIRM
+        CONFIRM,
+        EXCHANGE
     };
 
 private:

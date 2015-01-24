@@ -39,6 +39,8 @@ private:
     void sendPlayerList();
     void sendTurnMessage(int index);
     void givePieces(int index);
+    void sendMessageToAll(Message* message);
+    void servePieceMessage(Message* message, int player_index);
 
     Chat* chat;
     PieceSack* pieceSack;

@@ -18,6 +18,9 @@ public:
     void sendMessage(Message* message);
 
 private:
+    vector<string>* readSocket();
+
+private:
     QTcpSocket* socket;
     ConnectionData* conData;
     MessageReceiver* receiver;

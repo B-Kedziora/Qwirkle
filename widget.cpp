@@ -28,6 +28,12 @@ void Widget::receiveChatMessage(Message *mes)
     ui->MessageLog->append(QString::fromStdString(mes->getSenderName() + string(": ") + mes->getMessage()));
 }
 
+void Widget::receiveExchangeMessage(Message* message) {
+    QString mes = QString::fromStdString(message->getSenderName()) + " exchanged tiles (";
+    mes += QString::fromStdString(message->getMessage()) + ")";
+    ui->MessageLog->append("SERVER: " + mes);
+}
+
 void Widget::receivePieces(vector<Piece> pieces) {
     int piece_index = 0;
     for (int i = 0; i < pieces_widget->rowCount(); i++) {
@@ -49,10 +55,13 @@ void Widget::receivePieces(vector<Piece> pieces) {
     }
 }
 
-void Widget::setTurn(string playername) {
+void Widget::setTurn(string message) {
+    message.resize(message.length() - 1);
+    string playername = message;
     if (playername == chatName) {
         ui->PlayerNameLabel->setText("Your turn!");
         ui->ExchangeButton->setEnabled(true);
+        ui->PiecesWidget->setSelectionMode(QAbstractItemView::MultiSelection);
         return;
     }
     ui->PlayerNameLabel->setText(QString::fromStdString(playername));
@@ -89,6 +98,10 @@ void Widget::on_PiecesWidget_itemSelectionChanged()
 
 void Widget::on_pushButton_clicked()
 {
+}
+
+void Widget::on_ExchangeButton_clicked()
+{
     if (pieces_widget->selectedItems().size() == 0)
         return;
     QString pieces = "";
@@ -96,6 +109,9 @@ void Widget::on_pushButton_clicked()
         pieces += item->data(Qt::ItemDataRole::UserRole).toString();
         delete item;
     }
+    ui->ExchangeButton->setEnabled(false);
+    ui->PiecesWidget->clearSelection();
+    ui->PiecesWidget->setSelectionMode(QAbstractItemView::NoSelection);
     Message* message = new Message(Message::messageType::PIECE, pieces.toStdString(), chatName);
     connection->sendMessage(message);
 }

@@ -62,9 +62,25 @@ void Connection::socketConnected()
 
 void Connection::readAnswer()
 {
+    vector<string>* rawMessages = readSocket();
+    for (string rawMessage : *rawMessages) {
+        Message* mes = new Message(rawMessage);
+        receiver->receiveMessage(mes);
+    }
+}
+
+vector<string>* Connection::readSocket()
+{
     QByteArray message = socket->readAll();
-    Message* mes = new Message(string(message.data()));
-    receiver->receiveMessage(mes);
+    string text = string(message.data());
+
+    vector<string>* rawMessages = new vector<string>();
+    char* mes = strtok(const_cast<char*>(text.c_str()), "\n");
+    while (mes) {
+        rawMessages->push_back(mes);
+        mes = strtok(NULL, "\n");
+    }
+    return rawMessages;
 }
 
 void Connection::disconnected()
