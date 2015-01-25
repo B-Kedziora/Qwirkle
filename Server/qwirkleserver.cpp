@@ -87,6 +87,8 @@ void QwirkleServer::gameLoop(){
             int type = message->getType();
             if (type == message->PIECE) {
                 servePieceMessage(message, player_index);
+            } else if (type == message->MOVE) {
+                //serveMoveMessage(message, player_index);
             }
             player_index = (player_index + 1) % playersConnections.size();
             sendTurnMessage(player_index);
@@ -121,6 +123,16 @@ void QwirkleServer::servePieceMessage(Message* message, int player_index) {
     Message* exchange_message =
             new Message(Message::messageType::EXCHANGE, to_string(count), message->getSenderName());
     sendMessageToAll(exchange_message);
+}
+
+void QwirkleServer::serveMoveMessage(Message* message, int player_index) {
+    Utils::printDate();
+    cout<<"Player " << message->getSenderName() << " executed move: "<<message->getMessage()<<endl;
+
+    int count = message->getMessageTokens().size() / 4;
+    playersConnections[player_index]->getPlayer()->takePieces(count);
+    givePieces(player_index);
+    sendMessageToAll(message);
 }
 
 void QwirkleServer::closeGame() {

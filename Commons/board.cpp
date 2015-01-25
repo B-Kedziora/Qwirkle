@@ -2,14 +2,13 @@
 
 using namespace std;
 
-Board::Board()
+Board::Board() :
+    drop_points(-1),
+    game_started(false)
 {
-    pieces = vector<vector<Piece>>(181);
-    for (vector<Piece> v : pieces) {
-        v = vector<Piece>(181);
+    for (int i = 0; i < 181; i++) {
+        pieces.push_back(vector<Piece>(181, Piece()));
     }
-    drops = vector<Drop>();
-    drop_points = -1;
 }
 
 void Board::addDrop(Drop drop) {
@@ -17,17 +16,15 @@ void Board::addDrop(Drop drop) {
     pieces[drop.position[0]][drop.position[1]] = drop.piece;
 }
 
-void Board::deleteDrop(Drop toDelete) {
+void Board::deleteDrops() {
     for (int i = drops.size() - 1; i >= 0; i--) {
-        if (drops[i].isEqual(toDelete)) {
-            drops.erase(drops.begin() + i);
-            continue;
-        }
+        drops.erase(drops.begin() + i);
+        pieces[drops[i].position[0]][drops[i].position[1]] = Piece();
     }
-    pieces[toDelete.position[0]][toDelete.position[1]] = Piece();
 }
 
 void Board::executeDrops() {
+    game_started = true;
     drops.clear();
     drop_points = -1;
 }
@@ -46,16 +43,18 @@ bool Board::areDropsValid() {
     vector<Piece> main_line = getLine(drops.front(), direction);
     areFeaturesCorrect(main_line);
     int points = main_line.size();
+    if (main_line.size() == 6)
+        points += 6;
     for (Drop drop : drops) {
         int length = 0;
         if(!isDropPartOfLine(drop, (Direction)(1 - direction), &length)) {
                 return false;
         }
-        if (length > 1) {
-            points += length;
-        }
+        if (length > 1) points += length;
+
+        if (length == 6) points += 6;
     }
-    if (points == drops.size()) {
+    if (points == drops.size() && game_started || points == 0) {
         return false;
     }
     drop_points = points;

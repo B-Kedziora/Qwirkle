@@ -1,5 +1,7 @@
 #include "piece.h"
 
+using namespace std;
+
 Piece::Piece() {
     features[COLOR] = EMPTY;
     features[SHAPE] = EMPTY;
@@ -7,6 +9,18 @@ Piece::Piece() {
 
 Piece::Piece(short color, short shape)
 {
+    features[COLOR] = color;
+    features[SHAPE] = shape;
+}
+
+Piece::Piece(string text) {
+    stringstream stream(text);
+    short color;
+    short shape;
+    char dot;
+    stream >> color;
+    stream >> dot;
+    stream >> shape;
     features[COLOR] = color;
     features[SHAPE] = shape;
 }

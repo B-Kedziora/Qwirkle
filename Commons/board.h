@@ -17,7 +17,7 @@ class Board
 public:
     Board();
     void addDrop(Drop drop);
-    void deleteDrop(Drop toDelete);
+    void deleteDrops();
     void executeDrops();
     std::vector<std::vector <Piece> > getPieces();
     bool areDropsValid();
@@ -44,6 +44,7 @@ private:
     std::vector<std::vector<Piece>> pieces;
     std::vector<Drop> drops;
     int drop_points;
+    bool game_started;
 };
 
 #endif // BOARD_H

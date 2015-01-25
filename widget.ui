@@ -27,18 +27,18 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>490</y>
+     <y>480</y>
      <width>601</width>
-     <height>71</height>
+     <height>81</height>
     </rect>
    </property>
   </widget>
   <widget class="QPushButton" name="QuitButton">
    <property name="geometry">
     <rect>
-     <x>630</x>
+     <x>700</x>
      <y>560</y>
-     <width>161</width>
+     <width>91</width>
      <height>27</height>
     </rect>
    </property>
@@ -68,7 +68,7 @@
    <property name="geometry">
     <rect>
      <x>630</x>
-     <y>330</y>
+     <y>250</y>
      <width>121</width>
      <height>17</height>
     </rect>
@@ -86,7 +86,7 @@
    <property name="geometry">
     <rect>
      <x>630</x>
-     <y>300</y>
+     <y>220</y>
      <width>131</width>
      <height>17</height>
     </rect>
@@ -123,8 +123,11 @@
      <x>625</x>
      <y>111</y>
      <width>161</width>
-     <height>181</height>
+     <height>101</height>
     </rect>
+   </property>
+   <property name="dragDropOverwriteMode">
+    <bool>false</bool>
    </property>
    <property name="showGrid">
     <bool>true</bool>
@@ -142,7 +145,7 @@
      <x>20</x>
      <y>20</y>
      <width>591</width>
-     <height>441</height>
+     <height>451</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -152,13 +155,22 @@
     </sizepolicy>
    </property>
    <property name="acceptDrops">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="dragEnabled">
     <bool>true</bool>
    </property>
+   <property name="dragDropOverwriteMode">
+    <bool>true</bool>
+   </property>
    <property name="dragDropMode">
     <enum>QAbstractItemView::NoDragDrop</enum>
+   </property>
+   <property name="defaultDropAction">
+    <enum>Qt::MoveAction</enum>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::SingleSelection</enum>
    </property>
    <property name="showGrid">
     <bool>true</bool>
@@ -546,20 +558,45 @@
    <column/>
    <column/>
    <column/>
+   <item row="0" column="0">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="flags">
+     <set>ItemIsDropEnabled|ItemIsEnabled</set>
+    </property>
+   </item>
+   <item row="89" column="89">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="background">
+     <brush brushstyle="NoBrush">
+      <color alpha="255">
+       <red>255</red>
+       <green>0</green>
+       <blue>0</blue>
+      </color>
+     </brush>
+    </property>
+   </item>
   </widget>
   <widget class="QTableWidget" name="PiecesWidget">
    <property name="geometry">
     <rect>
      <x>625</x>
-     <y>350</y>
+     <y>270</y>
      <width>161</width>
      <height>81</height>
     </rect>
    </property>
    <property name="acceptDrops">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="dragEnabled">
+    <bool>true</bool>
+   </property>
+   <property name="dragDropOverwriteMode">
     <bool>true</bool>
    </property>
    <property name="dragDropMode">
@@ -569,7 +606,10 @@
     <enum>Qt::MoveAction</enum>
    </property>
    <property name="selectionMode">
-    <enum>QAbstractItemView::MultiSelection</enum>
+    <enum>QAbstractItemView::NoSelection</enum>
+   </property>
+   <property name="cornerButtonEnabled">
+    <bool>true</bool>
    </property>
    <property name="rowCount">
     <number>2</number>
@@ -588,22 +628,6 @@
    <column/>
    <column/>
    <column/>
-  </widget>
-  <widget class="QPushButton" name="ExchangeButton">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>630</x>
-     <y>450</y>
-     <width>99</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Exchange</string>
-   </property>
   </widget>
   <widget class="QLabel" name="PlayingLabel">
    <property name="geometry">
@@ -636,6 +660,81 @@
     <string/>
    </property>
   </widget>
+  <widget class="QPushButton" name="MoveButton">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>430</y>
+     <width>161</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Confirm Move</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>360</y>
+     <width>141</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Move Type</string>
+   </property>
+   <widget class="QRadioButton" name="DropRadioButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>117</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Drop</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="ExchangeRadioButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>40</y>
+      <width>117</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Exchange</string>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <zorder>MessageInput</zorder>
+  <zorder>MessageLog</zorder>
+  <zorder>QuitButton</zorder>
+  <zorder>ScoreLabel</zorder>
+  <zorder>YourPiecesLabel</zorder>
+  <zorder>PiecesLeftLabel</zorder>
+  <zorder>SendButton</zorder>
+  <zorder>ScoreView</zorder>
+  <zorder>PiecesWidget</zorder>
+  <zorder>PlayingLabel</zorder>
+  <zorder>PlayerNameLabel</zorder>
+  <zorder>BoardWidget</zorder>
+  <zorder>MoveButton</zorder>
+  <zorder>groupBox</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

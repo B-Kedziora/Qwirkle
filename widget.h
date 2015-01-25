@@ -9,6 +9,7 @@
 #include <QTableWidgetItem>
 #include "Commons/piece.h"
 #include "Commons/drop.h"
+#include "Commons/board.h"
 
 class Widget;
 #include "game.h"
@@ -31,23 +32,25 @@ public:
 
 private slots:
     void on_SendButton_clicked();
-
     void on_MessageInput_returnPressed();
-
-    void on_PiecesWidget_itemSelectionChanged();
-
-    void on_pushButton_clicked();
-
-    void on_ExchangeButton_clicked();
+    void on_MoveButton_clicked();
+    void on_PiecesWidget_cellClicked(int row, int column);
+    void on_BoardWidget_cellClicked(int row, int column);
+    void on_ExchangeRadioButton_toggled(bool checked);
 
 private:
     void sendChatMessage();
+    void resetMove();
+    void sendDropMessage();
 
+private:
     Ui::Widget *ui;
     Connection* connection;
     string chatName;
-    QTableWidget* pieces_widget;
-    QTableWidget* board_widget;
+    bool players_turn;
+    bool exchange_mode;
+    vector<QTableWidgetItem*> player_pieces;
+    Board board;
 };
 
 #endif // WIDGET_H

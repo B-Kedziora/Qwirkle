@@ -1,6 +1,8 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include<sstream>
+
 class Piece
 {
 public:
@@ -31,6 +33,7 @@ public:
 
     Piece();
     Piece(short color, short shape);
+    Piece(std::string text);
     short getColor();
     short getShape();
     short getFeature(Feature feature);
