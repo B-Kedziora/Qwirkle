@@ -25,6 +25,9 @@ void Game::receiveMessage(Message *mes){
         break;
         case Message::EXCHANGE:
             widget->receiveExchangeMessage(mes);
+        break;
+        case Message::MOVE:
+            receiveMoveMessage(mes);
         default:
             break;
     }
@@ -58,6 +61,25 @@ void Game::receivePieces(string message_text) {
         pieces.push_back(Piece(color, shape));
     }
     widget->receivePieces(pieces);
+}
+
+void Game::receiveMoveMessage(Message* message) {
+    vector<Drop> drops;
+    vector<string> tokens = message->getMessageTokens();
+    for (int i = 0; i < tokens.size(); i += 4) {
+        Piece piece(tokens[i] + "." + tokens[i+1] + ".");
+        Drop drop(piece, stoi(tokens[i+2]), stoi(tokens[i+3]));
+        drops.push_back(drop);
+    }
+    int points = widget->executeMove(drops, message->getSenderName());
+
+    QList<QStandardItem*> list =
+            score_model.findItems(QString::fromStdString(message->getSenderName()));
+    for (QStandardItem* name : list) {
+        int row = score_model.indexFromItem(name).row();
+        QStandardItem* score = score_model.item(row, 1);
+        score->setText(QString::number(score->text().toInt() + points));
+    }
 }
 
 void Game::executeMove(string name, vector<Drop> drops) {

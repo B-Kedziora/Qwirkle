@@ -19,6 +19,10 @@ Widget::Widget(QWidget *parent) :
     ui->BoardWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
+string Widget::getPlayerName() {
+    return chatName;
+}
+
 void Widget::receiveChatMessage(Message *mes)
 {
     ui->MessageLog->append(QString::fromStdString(mes->getSenderName() + string(": ") + mes->getMessage()));
@@ -36,14 +40,7 @@ void Widget::receivePieces(vector<Piece> pieces) {
         for (int j = 0; j < ui->PiecesWidget->columnCount(); j++) {
             if (ui->PiecesWidget->item(i, j) != NULL) continue;
             Piece piece = pieces[piece_index];
-            QIcon icon = QIcon();
-            QPixmap pixmap("testicon.png");
-            if (pixmap.isNull()) exit(11);
-            icon.addPixmap(pixmap);
-            QTableWidgetItem* tile = new QTableWidgetItem(icon, "");
-            QVariant data(QString::number(piece.getColor()) + "." + QString::number(piece.getShape()) + ".");
-            tile->setData(Qt::ItemDataRole::UserRole, data);
-            tile->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+            QTableWidgetItem* tile = createItem(piece);
             player_pieces.push_back(tile);
             ui->PiecesWidget->setItem(i, j, tile);
             piece_index++;
@@ -231,4 +228,29 @@ void Widget::sendDropMessage() {
                 new Message(Message::messageType::MOVE, drop_message.toStdString(), chatName);
         connection->sendMessage(message);
     }
+}
+
+int Widget::executeMove(vector<Drop> drops, string player) {
+    if (player != chatName) {
+        for (Drop drop : drops) {
+            board.addDrop(drop);
+            QTableWidgetItem* tile = createItem(drop.getPiece());
+            ui->BoardWidget->setItem(drop.getPosX(), drop.getPosY(), tile);
+        }
+    }
+    int points = board.getDropPoints();
+    board.executeDrops();
+    return points;
+}
+
+QTableWidgetItem* Widget::createItem(Piece piece) {
+    QIcon icon = QIcon();
+    QPixmap pixmap("testicon.png");
+    //if (pixmap.isNull()) exit(11);
+    icon.addPixmap(pixmap);
+    QTableWidgetItem* tile = new QTableWidgetItem(icon, "");
+    QVariant data(QString::number(piece.getColor()) + "." + QString::number(piece.getShape()) + ".");
+    tile->setData(Qt::ItemDataRole::UserRole, data);
+    tile->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+    return tile;
 }

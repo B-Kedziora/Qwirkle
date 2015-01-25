@@ -73,4 +73,3 @@ void PlayerHandler::setPlayerName(string name)
 {
     player->setName(name);
 }
-

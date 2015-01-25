@@ -15,6 +15,9 @@ public:
     Drop(Piece new_piece, int posx, int posy);
     bool operator<(const Drop& that) const;
     bool isEqual(Drop that);
+    Piece getPiece();
+    int getPosX();
+    int getPosY();
 
 private:
     Drop();

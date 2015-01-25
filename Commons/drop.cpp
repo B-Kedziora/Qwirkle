@@ -22,3 +22,15 @@ bool Drop::isEqual(Drop that){
     if (this->position[POSY] != that.position[POSY]) return false;
     return this->piece.isEqual(that.piece);
 }
+
+Piece Drop::getPiece() {
+    return piece;
+}
+
+int Drop::getPosX() {
+    return position[POSX];
+}
+
+int Drop::getPosY() {
+    return position[POSY];
+}

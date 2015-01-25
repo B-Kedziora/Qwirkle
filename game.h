@@ -17,6 +17,7 @@ public:
     void receiveMessage(Message* mes);
     void receivePlayers(std::vector<string>);
     void receivePieces(string message_text);
+    void receiveMoveMessage(Message* message);
     void executeMove(string name, vector<Drop>);
 
 private:

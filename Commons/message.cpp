@@ -44,7 +44,7 @@ vector<string> Message::getMessageTokens() {
     char *token = strtok(const_cast<char*>(text.c_str()), ".");
     while(token) {
         tokens.push_back(string(token));
-        token = strtok(NULL, "");
+        token = strtok(NULL, ".");
     }
     return tokens;
 }

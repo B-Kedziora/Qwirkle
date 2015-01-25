@@ -28,6 +28,8 @@ public:
     void receiveExchangeMessage(Message* message);
     void receivePieces(vector<Piece> pieces);
     void setTurn(string message);
+    int executeMove(vector<Drop> drops, string player);
+    string getPlayerName();
     ~Widget();
 
 private slots:
@@ -42,6 +44,7 @@ private:
     void sendChatMessage();
     void resetMove();
     void sendDropMessage();
+    QTableWidgetItem* createItem(Piece piece);
 
 private:
     Ui::Widget *ui;
