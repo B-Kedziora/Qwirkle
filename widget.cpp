@@ -126,10 +126,10 @@ void Widget::resetMove() {
                 int row = piece->row();
                 int column = piece->column();
                 ui->PiecesWidget->setItem(i, j, ui->BoardWidget->takeItem(row, column));
-                continue;
+                break;
             }
             if (piece->tableWidget() == ui->PiecesWidget)
-                continue;
+                break;
         }
     }
 }
@@ -200,7 +200,6 @@ void Widget::sendDropMessage() {
     for (QTableWidgetItem* piece : player_pieces) {
         if (piece->tableWidget() != ui->BoardWidget)
             continue;
-        piece->setFlags(piece->flags() ^ Qt::ItemIsSelectable);
         int row = piece->row();
         int column = piece->column();
         Drop drop(Piece(piece->data(Qt::UserRole).toString().toStdString()), row, column);
@@ -224,8 +223,7 @@ void Widget::sendDropMessage() {
             QTableWidgetItem* piece = player_pieces[i];
             if (piece->tableWidget() != ui->BoardWidget) continue;
 
-            // TODO: Make confirmed drops not selectable.
-            //piece->setFlags(piece->flags() & Qt::ItemIsSelectable);
+            piece->setFlags(piece->flags() ^ Qt::ItemIsSelectable);
             player_pieces.erase(player_pieces.begin() + i);
 
             drop_message += piece->data(Qt::ItemDataRole::UserRole).toString();

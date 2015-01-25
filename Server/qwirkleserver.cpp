@@ -85,15 +85,11 @@ void QwirkleServer::gameLoop(){
         if (messages.size() > 0) {
             Message* message = messages.front();
             int type = message->getType();
-            cout << "derp" << endl;
-            cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
             if (type == message->PIECE) {
                 servePieceMessage(message, player_index);
             } else if (type == message->MOVE) {
                 serveMoveMessage(message, player_index);
             }
-            cout << "derp" << endl;
-            cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
             if (playersConnections[player_index]->getPlayer()->getPieceCount() == 0) {
                 Utils::printDate();
                 cout << "Game ended!" << endl;
@@ -144,14 +140,8 @@ void QwirkleServer::serveMoveMessage(Message* message, int player_index) {
     Utils::printDate();
     cout<<"Player " << message->getSenderName() << " executed move: "<<message->getMessage()<<endl;
     int count = message->getMessageTokens().size() / 4;
-    cout << "herp" << endl;
-    cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
     playersConnections[player_index]->getPlayer()->takePieces(count);
-    cout << "herp" << endl;
-    cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
     givePieces(player_index);
-    cout << "herp" << endl;
-    cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
     sendMessageToAll(message);
 }
 
