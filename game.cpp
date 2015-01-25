@@ -28,6 +28,9 @@ void Game::receiveMessage(Message *mes){
         break;
         case Message::MOVE:
             receiveMoveMessage(mes);
+        break;
+        case Message::ENDGAME:
+            endGame();
         default:
             break;
     }
@@ -46,6 +49,7 @@ void Game::receivePlayers(vector<string> players) {
         index++;
     }
     score_view->setModel(&score_model);
+    widget->receivePlayerCount(players.size());
 }
 
 void Game::receivePieces(string message_text) {
@@ -82,19 +86,14 @@ void Game::receiveMoveMessage(Message* message) {
     }
 }
 
-void Game::executeMove(string name, vector<Drop> drops) {
-    for (Drop drop : drops) {
-        board.addDrop(drop);
-    }
-    if (board.areDropsValid()) {
-        int points = board.getDropPoints();
-        board.executeDrops();
-        QList<QStandardItem*> list = score_model.findItems(QString::fromStdString(name));
-        if (list.size() > 0) {
-            QStandardItem* name_item = list.front();
-            int row = score_model.indexFromItem(name_item).row();
-            QStandardItem* score_item = score_model.item(row, 1);
-            score_item->setText(QString::number(score_item->text().toInt() + points));
+void Game::endGame() {
+    QString winner = "";
+    int score = 0;
+    for (int i = 0; i < score_model.rowCount(); i++) {
+        if (score_model.item(i, 1)->text().toInt() > score) {
+            score = score_model.item(i, 1)->text().toInt();
+            winner = score_model.item(i, 0)->text();
         }
     }
+    widget->displayWinner(winner);
 }

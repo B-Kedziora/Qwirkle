@@ -6,7 +6,8 @@ Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget),
     players_turn(false),
-    exchange_mode(false)
+    exchange_mode(false),
+    pieces_left(108)
 {
     ui->setupUi(this);
     Game* game = new Game(this);
@@ -19,8 +20,10 @@ Widget::Widget(QWidget *parent) :
     ui->BoardWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
-string Widget::getPlayerName() {
-    return chatName;
+void Widget::receivePlayerCount(int count) {
+    pieces_left -= count * 6;
+    if (pieces_left < 0) pieces_left = 0;
+    ui->PiecesLeftLabel->setText("Pieces left: " + QString::number(pieces_left));
 }
 
 void Widget::receiveChatMessage(Message *mes)
@@ -197,6 +200,7 @@ void Widget::sendDropMessage() {
     for (QTableWidgetItem* piece : player_pieces) {
         if (piece->tableWidget() != ui->BoardWidget)
             continue;
+        piece->setFlags(piece->flags() ^ Qt::ItemIsSelectable);
         int row = piece->row();
         int column = piece->column();
         Drop drop(Piece(piece->data(Qt::UserRole).toString().toStdString()), row, column);
@@ -208,6 +212,7 @@ void Widget::sendDropMessage() {
         board.deleteDrops();
     } else {
         players_turn = false;
+        ui->MoveButton->setEnabled(false);
         ui->PiecesWidget->clearSelection();
         ui->PiecesWidget->setSelectionMode(QAbstractItemView::NoSelection);
         ui->BoardWidget->clearSelection();
@@ -233,10 +238,15 @@ void Widget::sendDropMessage() {
 }
 
 int Widget::executeMove(vector<Drop> drops, string player) {
+    pieces_left -= drops.size();
+    if (pieces_left < 0) pieces_left = 0;
+    ui->PiecesLeftLabel->setText("Pieces left: " + QString::number(pieces_left));
+
     if (player != chatName) {
         for (Drop drop : drops) {
             board.addDrop(drop);
             QTableWidgetItem* tile = createItem(drop.getPiece());
+            tile->setFlags(tile->flags() ^ Qt::ItemIsSelectable);
             ui->BoardWidget->setItem(drop.getPosX(), drop.getPosY(), tile);
         }
     }
@@ -248,11 +258,15 @@ int Widget::executeMove(vector<Drop> drops, string player) {
 QTableWidgetItem* Widget::createItem(Piece piece) {
     QIcon icon = QIcon();
     QPixmap pixmap("Images/" + QString::fromStdString(piece.getDescription()) + "png");
-    if (pixmap.isNull()) exit(11);
     icon.addPixmap(pixmap);
     QTableWidgetItem* tile = new QTableWidgetItem(icon, "");
     QVariant data(QString::number(piece.getColor()) + "." + QString::number(piece.getShape()) + ".");
     tile->setData(Qt::ItemDataRole::UserRole, data);
     tile->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     return tile;
+}
+
+void Widget::displayWinner(QString winner) {
+    ui->PlayingLabel->setText("Winner:");
+    ui->PlayerNameLabel->setText(winner);
 }

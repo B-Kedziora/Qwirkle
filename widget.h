@@ -25,11 +25,12 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = 0);
     void receiveChatMessage(Message* mes);
+    void receivePlayerCount(int count);
     void receiveExchangeMessage(Message* message);
     void receivePieces(vector<Piece> pieces);
     void setTurn(string message);
     int executeMove(vector<Drop> drops, string player);
-    string getPlayerName();
+    void displayWinner(QString winner);
     ~Widget();
 
 private slots:
@@ -54,6 +55,7 @@ private:
     bool exchange_mode;
     vector<QTableWidgetItem*> player_pieces;
     Board board;
+    int pieces_left;
 };
 
 #endif // WIDGET_H

@@ -28,7 +28,8 @@ public:
         TURN,
         PIECE,
         CONFIRM,
-        EXCHANGE
+        EXCHANGE,
+        ENDGAME
     };
 
 private:

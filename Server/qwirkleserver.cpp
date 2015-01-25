@@ -85,15 +85,31 @@ void QwirkleServer::gameLoop(){
         if (messages.size() > 0) {
             Message* message = messages.front();
             int type = message->getType();
+            cout << "derp" << endl;
+            cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
             if (type == message->PIECE) {
                 servePieceMessage(message, player_index);
             } else if (type == message->MOVE) {
                 serveMoveMessage(message, player_index);
             }
+            cout << "derp" << endl;
+            cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
+            if (playersConnections[player_index]->getPlayer()->getPieceCount() == 0) {
+                Utils::printDate();
+                cout << "Game ended!" << endl;
+
+                messages.erase(messages.begin());
+                sendMessageToAll(new Message(Message::messageType::ENDGAME, "GAMEOVER", "SERVER"));
+                break;
+            }
+            messages.erase(messages.begin());
             player_index = (player_index + 1) % playersConnections.size();
             sendTurnMessage(player_index);
-            messages.erase(messages.begin());
         }
+        this_thread::sleep_for(chrono::milliseconds(10));
+    }
+    while (1) {
+        chat->serveChat();
         this_thread::sleep_for(chrono::milliseconds(10));
     }
 }
@@ -128,8 +144,14 @@ void QwirkleServer::serveMoveMessage(Message* message, int player_index) {
     Utils::printDate();
     cout<<"Player " << message->getSenderName() << " executed move: "<<message->getMessage()<<endl;
     int count = message->getMessageTokens().size() / 4;
+    cout << "herp" << endl;
+    cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
     playersConnections[player_index]->getPlayer()->takePieces(count);
+    cout << "herp" << endl;
+    cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
     givePieces(player_index);
+    cout << "herp" << endl;
+    cout << playersConnections[player_index]->getPlayer()->getPieceCount() << endl;
     sendMessageToAll(message);
 }
 
@@ -214,7 +236,8 @@ void QwirkleServer::givePieces(int index) {
     PlayerHandler* player = playersConnections[index];
     int ownPieces = player->getPlayer()->getPieceCount();
     vector<Piece*>* pieces = pieceSack->getPiece(6 - ownPieces);
-    player->givePieces(*pieces);
+    if (pieces != nullptr)
+        player->givePieces(*pieces);
 }
 
 void QwirkleServer::sendMessageToAll(Message* message) {

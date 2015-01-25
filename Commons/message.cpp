@@ -81,6 +81,9 @@ void Message::debugPrint()
         case messageType::EXCHANGE:
             cout<<"Type:EXCHANGE\n";
             break;
+        case messageType::ENDGAME:
+            cout<<"Type:ENDGAME\n";
+            break;
         default:
             cout<<"Type:OTHER\n";
     }
