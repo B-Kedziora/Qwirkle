@@ -47,3 +47,12 @@ bool Piece::isEqual(Piece that) {
     if (this->features[COLOR] != that.features[COLOR]) return false;
     return (this->features[SHAPE] == that.features[SHAPE]);
 }
+
+std::string Piece::getDescription() {
+    std::string text;
+    text += to_string(features[COLOR]);
+    text += string(".");
+    text += to_string(features[SHAPE]);
+    text += string(".");
+    return text;
+}

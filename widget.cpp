@@ -103,9 +103,11 @@ void Widget::on_ExchangeRadioButton_toggled(bool checked)
 
     if (checked) {
         ui->PiecesWidget->setSelectionMode(QAbstractItemView::MultiSelection);
-    } else {
         ui->PiecesWidget->clearSelection();
+        ui->BoardWidget->clearSelection();
+    } else {
         ui->PiecesWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+        ui->PiecesWidget->clearSelection();
     }
 }
 
@@ -245,8 +247,8 @@ int Widget::executeMove(vector<Drop> drops, string player) {
 
 QTableWidgetItem* Widget::createItem(Piece piece) {
     QIcon icon = QIcon();
-    QPixmap pixmap("testicon.png");
-    //if (pixmap.isNull()) exit(11);
+    QPixmap pixmap("Images/" + QString::fromStdString(piece.getDescription()) + "png");
+    if (pixmap.isNull()) exit(11);
     icon.addPixmap(pixmap);
     QTableWidgetItem* tile = new QTableWidgetItem(icon, "");
     QVariant data(QString::number(piece.getColor()) + "." + QString::number(piece.getShape()) + ".");

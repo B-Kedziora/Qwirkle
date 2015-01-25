@@ -41,8 +41,11 @@ bool Board::areDropsValid() {
         return false;
     }
     vector<Piece> main_line = getLine(drops.front(), direction);
-    areFeaturesCorrect(main_line);
-    int points = main_line.size();
+    if (!areFeaturesCorrect(main_line))
+        return false;
+    int points = 0;
+    if (main_line.size() > 1)
+        points += main_line.size();
     if (main_line.size() == 6)
         points += 6;
     for (Drop drop : drops) {
@@ -77,7 +80,9 @@ bool Board::areDropsInLine(enum Direction direction) {
             (direction == HORIZONTAL) ? Drop::Coordinate::POSX : Drop::Coordinate::POSY;
     if (drops.front().position[coordinate] == drops.back().position[coordinate]) {
         for (int i = drops.front().position[1 - coordinate]; i <= drops.back().position[1 - coordinate]; i++) {
-            if (!isFieldEmpty(drops.front().position[coordinate], i))
+            if (coordinate == Drop::Coordinate::POSX && isFieldEmpty(drops.front().position[coordinate], i))
+                return false;
+            if (coordinate == Drop::Coordinate::POSY && isFieldEmpty(i, drops.front().position[coordinate]))
                 return false;
         }
         return true;
@@ -109,7 +114,7 @@ vector<Piece> Board::getLine(Drop drop, enum Direction direction) {
         line.push_back(getPiece(common_coordinate, common_position, min));
     }
     while (!isFieldEmpty(common_coordinate, common_position, max + 1)) {
-        max--;
+        max++;
         line.push_back(getPiece(common_coordinate, common_position, max));
     }
     return line;
@@ -134,8 +139,9 @@ bool Board::doesFeatureRepeat(vector<Piece> line, enum Piece::Feature feature) {
         features.push_back(piece.getFeature(feature));
     }
     sort(features.begin(), features.end());
-    unique(features.begin(), features.end());
-    return (features.size() != size);
+    vector<int>::iterator it = unique(features.begin(), features.end());
+    features.resize(distance(features.begin(), it) );
+    return (size != features.size());
 }
 
 bool Board::areFeaturesCorrect(vector<Piece> line) {
@@ -159,7 +165,7 @@ bool Board::isDropPartOfLine(Drop drop, enum Direction direction, int* length) {
 
 bool Board::isFieldEmpty(enum Drop::Coordinate first_coordinate, int pos1, int pos2) {
     if (first_coordinate == Drop::Coordinate::POSX) {
-        return isFieldEmpty(pos2, pos1);
+        return isFieldEmpty(pos1, pos2);
     }
     return isFieldEmpty(pos2, pos1);
 }

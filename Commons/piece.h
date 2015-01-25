@@ -39,6 +39,7 @@ public:
     short getFeature(Feature feature);
     bool isEmpty();
     bool isEqual(Piece that);
+    std::string getDescription();
 
 private:
     short features[2];
