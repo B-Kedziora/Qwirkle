@@ -13,11 +13,18 @@ Widget::Widget(QWidget *parent) :
     Game* game = new Game(this);
     connection = new Connection(&chatName, game);
 
-    ui->PiecesWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->PiecesWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    ui->BoardWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->BoardWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    for (int i = 0; i < ui->BoardWidget->columnCount(); i++) {
+        ui->BoardWidget->setColumnWidth(i, 30);
+    }
+    for (int i = 0; i < ui->BoardWidget->rowCount(); i++) {
+        ui->BoardWidget->setRowHeight(i, 30);
+    }
+    for (int i = 0; i < ui->PiecesWidget->columnCount(); i++) {
+        ui->PiecesWidget->setColumnWidth(i, 30);
+    }
+    for (int i = 0; i < ui->PiecesWidget->rowCount(); i++) {
+        ui->PiecesWidget->setRowHeight(i, 30);
+    }
 }
 
 void Widget::receivePlayerCount(int count) {
@@ -267,4 +274,9 @@ QTableWidgetItem* Widget::createItem(Piece piece) {
 void Widget::displayWinner(QString winner) {
     ui->PlayingLabel->setText("Winner:");
     ui->PlayerNameLabel->setText(winner);
+}
+
+void Widget::on_QuitButton_clicked()
+{
+    exit(0);
 }

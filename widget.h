@@ -41,6 +41,8 @@ private slots:
     void on_BoardWidget_cellClicked(int row, int column);
     void on_ExchangeRadioButton_toggled(bool checked);
 
+    void on_QuitButton_clicked();
+
 private:
     void sendChatMessage();
     void resetMove();
